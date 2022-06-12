@@ -1,0 +1,83 @@
+<div class="shadow bg-white rounded">
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button (click)="_activeModal.close()" type="button" class="btn-close" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <form #frmTask="ngForm">
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iTitle">Title</label>
+        <input [(ngModel)]="taskMdl.title" #iTitle="ngModel" name="iTitle" id="iTitle" placeholder="Title" type="text"
+          class="form-control" required minlength="2" />
+
+        <div *ngIf="iTitle.invalid && iTitle.dirty">
+          <label class="text-warning" *ngIf="iTitle.errors?.required">Title is required.</label>
+          <label class="text-warning" *ngIf="iTitle.errors?.minlength">
+            Title must be at least 2 characters long.
+          </label>
+        </div>
+      </div>
+
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="details">Details</label>
+        <textarea cols="30" rows="3" [(ngModel)]="taskMdl.details" #details="ngModel" name="details" id="details"
+          placeholder="Details" type="text" class="form-control" required minlength="2">
+              </textarea>
+
+        <div *ngIf="details.invalid && details.dirty">
+          <label class="text-warning" *ngIf="details.errors?.required">Detail is required.</label>
+          <label class="text-warning" *ngIf="details.errors?.minlength">
+            Details must be at least 2 characters long.
+          </label>
+        </div>
+      </div>
+
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iProgress">Task Completed (In Percentage)</label>
+        <input [(ngModel)]="taskMdl.progress_ratio" #iProgress="ngModel" name="iProgress" id="iProgress"
+          placeholder="Progress Ratio" type="number" min="0" max="100" class="form-control" required />
+
+        <div *ngIf="iProgress.invalid && iProgress.dirty">
+          <label class="text-warning" *ngIf="iProgress.errors?.required">Progress Ratio is required.</label>
+          <label class="text-warning" *ngIf="iProgress.errors?.min">
+            Ratio can't be less than 0.
+          </label>
+          <label class="text-warning" *ngIf="iProgress.errors?.max">
+            Ratio can't be more than 100.
+          </label>
+        </div>
+      </div>
+
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iProgress">Task Status</label>
+        <select name="iStatus" [(ngModel)]="taskMdl.status" #iStatus="ngModel" class="form-select" id="iStatus"
+          required>
+          <option value="">Choose Status</option>
+          <option *ngFor="let item of statusDdlLst" [value]="item.value">{{item.title}}</option>
+        </select>
+
+        <div *ngIf="iStatus.invalid && iStatus.dirty">
+          <label class="text-warning" *ngIf="iStatus.errors?.required">Select valid status.</label>
+        </div>
+      </div>
+
+      <div class="form-group mt-3 m-1">
+        <button *ngIf="!isProcessing" type="button" class="btn-transition btn btn-outline-success"
+          [disabled]="frmTask.invalid" (click)="saveTask()">
+          <i class="fa fa-floppy-o" aria-hiddden="true"> Save</i>
+        </button>
+        <button *ngIf="isProcessing" class="btn-transition btn btn-outline-info" type="button" disabled>
+          <span class="spinner-border text-danger spinner-border-sm" role="status" aria-hidden="true"></span>
+          Processing...
+        </button>
+        &nbsp;
+        <button type="button" class="btn-transition btn btn-outline-danger" (click)="_activeModal.close()">
+          <i class="fa fa-times" aria-hidden="true"> Cancel</i>
+        </button>
+
+      </div>
+
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+# Ignore bin and obj
+/APIDotNetCore/bin/
+/APIDotNetCore/obj/
+/DataLayer/bin/
+/DataLayer/obj/
+/RepositoryLayer/bin/
+/RepositoryLayer/obj/
+/.vs/

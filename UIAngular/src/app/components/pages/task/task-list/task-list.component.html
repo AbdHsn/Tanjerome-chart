@@ -1,0 +1,118 @@
+<div class="shadow bg-white rounded mb-3 p-3">
+  <div class="row">
+    <div class="col-12">
+      <label class="h4">Task List</label>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col-lg-4 col-sm-12">
+      <div class="input-group">
+        <label class="input-group-text" for="inputGroupSelect01">Total Records: {{totalRecord}}</label>
+        <label class="input-group-text" for="inputGroupSelect01">Row Size</label>
+        <select name="num" [(ngModel)]="rowSize" (change)="onRowSizeOptionChange($event)" class="form-select"
+          id="inputGroupSelect01">
+          <option *ngFor="let item of rowSizeOption" [value]="item">{{item}}</option>
+        </select>
+
+        <button class="btn btn-sm btn-info" (click)="onCreateTaskClick()"><Span></Span> New Task</button>
+      </div>
+    </div>
+    <div class="col-lg-8 col-sm-12">
+      <div class="row">
+        <div class="col-lg-8 col-sm-12"></div>
+        <div class="col-lg-4 col-sm-12">
+          <div class="input-group">
+            <input [(ngModel)]="searchByTitle" (keyup)="onSearchByTitle($event)" type="text" class="form-control"
+              placeholder="Search By Title" aria-label="Search" aria-describedby="basic-addon2">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+
+            <!-- fa fa-sort-amount-down -->
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('id')"><span class="{{orderColumn.column == 'id' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                fa-sort-amount-up':
+                ''}}"></span> Id</th>
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('title')"> <span class="{{orderColumn.column == 'title' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                fa-sort-amount-up':
+                ''}}"></span> Title</th>
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('details')"> <span class="{{orderColumn.column == 'details' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                fa-sort-amount-up':
+                ''}}"></span> Details</th>
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('progress_ratio')"> <span class="{{orderColumn.column == 'progress_ratio' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                fa-sort-amount-up':
+                ''}}"></span> Progress</th>
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('status')"> <span class="{{orderColumn.column == 'status' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                fa-sort-amount-up':
+                ''}}"></span> Status</th>
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('insert_date')"> <span class="{{orderColumn.column == 'insert_date' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                fa-sort-amount-up':
+                ''}}"></span> Insert Date</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="100" class="text-center">
+              <div class="spinner-border text-danger spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div><span class="text-warning p-2">Loading...</span>
+            </td>
+          </tr>
+          <tr *ngFor="let item of taskMdlLst">
+            <th scope="row">{{item.id}}</th>
+            <td>
+              {{ item.title }}
+            </td>
+            <td>{{ item.details }}</td>
+            <td>
+              <p>
+                <ngb-progressbar type=" warning" [value]="item.progress_ratio" [striped]="true" [animated]="true">
+                  <i>{{item.progress_ratio}}%</i></ngb-progressbar>
+              </p>
+            </td>
+            <td>
+              <button *ngIf="item.status" type="button"
+                class="btn btn-sm
+                 {{item.status == 'Completed' ? 'btn-success' : item.status == 'InProgress' ? 'btn-info': 'btn-danger'}}">
+                {{ item.status }}</button>
+            </td>
+            <td>
+              <div class="row" *ngIf="item.insert_date != null">
+                <small><span class="fa fa-clock-o"> {{item.insert_date | date: "HH:mm a"}}</span> </small>
+              </div>
+              <div class="row" *ngIf="item.insert_date != null">
+                <small> <span class="fa fa-calendar"></span> {{item.insert_date | date: "dd-MMM-yyyy"}}</small>
+              </div>
+            </td>
+
+            <td>
+              <button class="btn btn-sm btn-outline-info" (click)="onEditClick(item)">Edit</button> &nbsp;
+              <button class="btn btn-sm btn-outline-danger" (click)="onDeleteClick(item)">Delete</button>
+            </td>
+          </tr>
+          <tr *ngIf="!isLoading && taskMdlLst.length <= 0">
+            <td colspan="100" class="text-center">
+              <span class="text-info p-2">No Records</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <ngb-pagination [collectionSize]="totalRecord" (pageChange)="onPaginationChange($event)" [(page)]="page"
+        [pageSize]="rowSize" [directionLinks]="true" [boundaryLinks]="true"></ngb-pagination>
+    </div>
+  </div>
+</div>

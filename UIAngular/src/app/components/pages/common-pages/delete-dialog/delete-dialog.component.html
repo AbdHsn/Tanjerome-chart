@@ -1,0 +1,25 @@
+<div class="modal-content border-0">
+  <div class="modal-body p-0">
+    <div class="card border-0 p-sm-3 p-2 justify-content-center">
+      <div class="card-header pb-0 bg-white border-0 ">
+        <div class="row">
+          <div class="col ml-auto">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span> </button> -->
+          </div>
+        </div>
+
+        <p class="my-2"> <b>Are you sure you want to delete {{title}}?</b> </p>
+        <p class="text-danger"> <b>Note: Deleted item can't be retrive.</b> </p>
+      </div>
+      <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
+        <div class="row justify-content-end no-gutters">
+          <div class="col-auto"><button type="button" class="btn btn-light text-muted" data-dismiss="modal"
+              (click)="_activeModal.close(false)">Cancel</button></div>
+          <div class="col-auto"><button type="button" class="btn btn-danger px-4" data-dismiss="modal"
+              (click)="_activeModal.close(true)">Delete</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

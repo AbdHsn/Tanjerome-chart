@@ -1,0 +1,66 @@
+
+@import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
+
+body {
+    font-family: 'Rubik', sans-serif;
+    background: #eee;
+}
+
+.container{
+    margin-top:270px !important;
+}
+
+button{
+    font-size: calc(12px + (16 - 12) * ((100vw - 360px) / (1600 - 300))) !important;
+}
+
+ p {
+    font-size: calc(13px + (16 - 13) * ((100vw - 360px) / (1600 - 300))) !important;
+}
+
+
+button:focus {
+    box-shadow: none !important;
+    outline-width: 0;
+}
+
+.card{
+    border-radius :12px;
+    width: calc(500px + 10 * ((100vw - 320px) / 680)) ;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8) ;
+}
+
+.card-header{
+    border-radius :12px !important;
+}
+
+.modal-body .btn-danger{
+    border-radius: 11px ;
+    box-shadow:  0px 5px 5px rgba(0, 0, 0, 0.2) ;
+}
+ .btn-light{
+     background: transparent !important;
+     border:0px !important;
+ }
+
+ .btn-light:hover{
+    border-color:#fff !important;
+ }
+
+ .btn-light:active{
+    border-color:#fff !important;
+ }
+
+@media (max-width: 526px) {
+    .card{
+        width: unset;
+    } 
+}
+
+span{
+    font-size: 30px !important;
+}
+
+.modal-content{
+    background: transparent !important;
+}
