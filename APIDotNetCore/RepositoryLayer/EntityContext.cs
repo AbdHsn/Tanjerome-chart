@@ -20,10 +20,10 @@ namespace RepositoryLayer
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.Entity<Tasks>(entity =>
+            modelBuilder.Entity<PatientRecords>(entity =>
             {
-                entity.ToTable("Tasks");
-                entity.Property(p => p.id).ValueGeneratedOnAdd().HasColumnName("id");
+                entity.ToTable("PatientRecords");
+                entity.Property(p => p.Id).ValueGeneratedOnAdd().HasColumnName("Id");
             });
             
             modelBuilder.Entity<TotalRecordCountGLB>(entity =>
@@ -33,7 +33,7 @@ namespace RepositoryLayer
         }
 
         #region TableEntities
-        public virtual DbSet<Tasks> Tasks { get; set; } = null!;
+        public virtual DbSet<PatientRecords> PatientRecords { get; set; } = null!;
         #endregion TableEntities
 
         #region  RawSQL Entity

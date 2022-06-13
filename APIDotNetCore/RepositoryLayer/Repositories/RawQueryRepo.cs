@@ -25,10 +25,10 @@ namespace RepositoryLayer
             {
                 if (getAllByWhereGLB.LimitRange == 0)
                 {
-                    sql = $@"SELECT * FROM ""{getAllByWhereGLB.TableOrViewName}"" ORDER BY {getAllByWhereGLB.SortColumn}";
+                    sql = $@"SELECT * FROM {getAllByWhereGLB.TableOrViewName} ORDER BY {getAllByWhereGLB.SortColumn}";
                 }
                 else {
-                    sql = $@"SELECT * FROM ""{getAllByWhereGLB.TableOrViewName}"" ORDER BY {getAllByWhereGLB.SortColumn} OFFSET {getAllByWhereGLB.LimitIndex} LIMIT {getAllByWhereGLB.LimitRange}";
+                    sql = $@"SELECT * FROM {getAllByWhereGLB.TableOrViewName} ORDER BY {getAllByWhereGLB.SortColumn} OFFSET {getAllByWhereGLB.LimitIndex} ROWS FETCH NEXT {getAllByWhereGLB.LimitRange} ROWS ONLY";
                 }
             }
             else
@@ -38,7 +38,7 @@ namespace RepositoryLayer
                     sql = $@"SELECT * FROM ""{getAllByWhereGLB.TableOrViewName}"" WHERE {getAllByWhereGLB.WhereConditions} ORDER BY {getAllByWhereGLB.SortColumn}";
                 }
                 else {
-                    sql = $@"SELECT * FROM ""{getAllByWhereGLB.TableOrViewName}"" WHERE {getAllByWhereGLB.WhereConditions} ORDER BY {getAllByWhereGLB.SortColumn} OFFSET {getAllByWhereGLB.LimitIndex} LIMIT {getAllByWhereGLB.LimitRange}";
+                    sql = $@"SELECT * FROM ""{getAllByWhereGLB.TableOrViewName}"" WHERE {getAllByWhereGLB.WhereConditions} ORDER BY {getAllByWhereGLB.SortColumn} OFFSET {getAllByWhereGLB.LimitIndex} ROWS FETCH NEXT {getAllByWhereGLB.LimitRange} ROWS ONLY";
                 }
             }
 
@@ -51,11 +51,11 @@ namespace RepositoryLayer
             string sql = default(string);
             if (string.IsNullOrWhiteSpace(countAllByWhereGLB.WhereConditions))
             {
-                sql = $@"SELECT Count(id) AS TotalRecord FROM ""{countAllByWhereGLB.TableOrViewName}""";
+                sql = $@"SELECT Count(id) AS TotalRecord FROM {countAllByWhereGLB.TableOrViewName}";
             }
             else
             {
-                sql = $@"SELECT Count(id) AS TotalRecord FROM ""{countAllByWhereGLB.TableOrViewName}"" WHERE {countAllByWhereGLB.WhereConditions}";
+                sql = $@"SELECT Count(id) AS TotalRecord FROM {countAllByWhereGLB.TableOrViewName} WHERE {countAllByWhereGLB.WhereConditions}";
             }
             return await _context.Set<T>().FromSqlRaw(sql).AsNoTracking().FirstOrDefaultAsync();
         }

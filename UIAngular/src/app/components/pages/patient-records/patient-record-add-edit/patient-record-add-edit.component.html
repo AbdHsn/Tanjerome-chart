@@ -1,0 +1,78 @@
+<div class="shadow bg-white rounded">
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button (click)="_activeModal.close()" type="button" class="btn-close" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <form #frmTask="ngForm">
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iName">Name</label>
+        <input [(ngModel)]="patientRecordMdl.name" #iName="ngModel" name="iName" id="iName" placeholder="Name"
+          type="text" class="form-control" required minlength="2" />
+
+        <div *ngIf="iName.invalid && iName.dirty">
+          <label class="text-warning" *ngIf="iName.errors?.required">Name is required.</label>
+          <label class="text-warning" *ngIf="iName.errors?.minlength">
+            Name must be at least 2 characters long.
+          </label>
+        </div>
+      </div>
+
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iPhone">Phone</label>
+        <input [(ngModel)]="patientRecordMdl.phone" #iPhone="ngModel" name="iPhone" id="iPhone" placeholder="Phone"
+          type="text" class="form-control" required minlength="2" />
+
+        <div *ngIf="iPhone.invalid && iPhone.dirty">
+          <label class="text-warning" *ngIf="iPhone.errors?.required">Phone is required.</label>
+          <label class="text-warning" *ngIf="iPhone.errors?.minlength">
+            Phone must be at least 2 characters long.
+          </label>
+        </div>
+      </div>
+
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iDioptres">Dioptres</label>
+        <input [(ngModel)]="patientRecordMdl.dioptres" #iDioptres="ngModel" name="iDioptres" id="iDioptres"
+          placeholder="Dioptres" type="number" class="form-control" required />
+
+        <div *ngIf="iDioptres.invalid && iDioptres.dirty">
+          <label class="text-warning" *ngIf="iDioptres.errors?.required">Dioptres is required.</label>
+        </div>
+      </div>
+
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iDOB">Date Of Birth</label>
+        <div class="input-group">
+          <input [(ngModel)]="patientRecordMdl.dateOfBirth" ngbDatepicker #d="ngbDatepicker" #iDOB="ngModel" name="iDOB"
+            id="iDOB" placeholder="yyyy-mm-dd" type="text" class="form-control" required />
+          <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar"
+              aria-hidden="true"></i></button>
+        </div>
+
+        <div *ngIf="iDOB.invalid && iDOB.dirty">
+          <label class="text-warning" *ngIf="iDOB.errors?.required">Date of birth is required.</label>
+        </div>
+      </div>
+
+
+      <div class="form-group mt-3 m-1">
+        <button *ngIf="!isProcessing" type="button" class="btn-transition btn btn-outline-success"
+          [disabled]="frmTask.invalid" (click)="savePatientRecord()">
+          <i class="fa fa-floppy-o" aria-hiddden="true"> Save</i>
+        </button>
+        <button *ngIf="isProcessing" class="btn-transition btn btn-outline-info" type="button" disabled>
+          <span class="spinner-border text-danger spinner-border-sm" role="status" aria-hidden="true"></span>
+          Processing...
+        </button>
+        &nbsp;
+        <button type="button" class="btn-transition btn btn-outline-danger" (click)="_activeModal.close()">
+          <i class="fa fa-times" aria-hidden="true"> Cancel</i>
+        </button>
+
+      </div>
+
+
+    </form>
+  </div>
+</div>

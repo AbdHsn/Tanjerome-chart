@@ -8,38 +8,38 @@ using RepositoryLayer;
 
 namespace APIDotNetCore.EndPoints
 {
-    public class TasksApi
+    public class PatientRecordsApi
     {
         #region Properties
-        private readonly IEntityRepo<Tasks> _task;
-        private readonly IRawQueryRepo<Tasks> _taskRawSql;
-        private readonly IRawQueryRepo<TotalRecordCountGLB> _taskCountRawSql;
+        private readonly IEntityRepo<PatientRecords> _patientRecord;
+        private readonly IRawQueryRepo<PatientRecords> _patientRecordRawSql;
+        private readonly IRawQueryRepo<TotalRecordCountGLB> _patientRecordCountRawSql;
         private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
         #endregion
 
         #region Constructor
-        public TasksApi(
-           IEntityRepo<Tasks> task,
-           IRawQueryRepo<Tasks> taskRawSql,
+        public PatientRecordsApi(
+           IEntityRepo<PatientRecords> task,
+           IRawQueryRepo<PatientRecords> taskRawSql,
            IRawQueryRepo<TotalRecordCountGLB> taskCountRawSql,
            IHubContext<BroadcastHub, IHubClient> hubContext
         )
         {
-            _task = task;
-            _taskRawSql = taskRawSql;
-            _taskCountRawSql = taskCountRawSql;
+            _patientRecord = task;
+            _patientRecordRawSql = taskRawSql;
+            _patientRecordCountRawSql = taskCountRawSql;
             _hubContext = hubContext;
         }
         #endregion
 
         #region API Endpoint Function
-        public async Task TaskAPIEndPoints(WebApplication app)
+        public async Task PatientRecordsAPIEndPoints(WebApplication app)
         {
-            app.MapGet("/task-api/get", async () =>
+            app.MapGet("/patient-record-api/get", async () =>
             {
                 try
                 {
-                    return Results.Ok(await _task.GetAll());
+                    return Results.Ok(await _patientRecord.GetAll());
                 }
                 catch (Exception ex)
                 {
@@ -48,7 +48,7 @@ namespace APIDotNetCore.EndPoints
                 }
             });
 
-            app.MapPost("/task-api/get-grid", async (DatatableGLB tableObj) =>
+            app.MapPost("/patient-record-api/get-grid", async (DatatableGLB tableObj) =>
             {
                 try
                 {
@@ -78,7 +78,7 @@ namespace APIDotNetCore.EndPoints
                     else
                     {
                         //assign default sort info base on column
-                        sortInformation = "insert_date DESC";
+                        sortInformation = "InsertDate DESC";
                     }
 
 
@@ -90,9 +90,13 @@ namespace APIDotNetCore.EndPoints
                     {
                         foreach (var item in tableObj.searches)
                         {
-                            if (!string.IsNullOrEmpty(item.value) && item.search_by == "title")
+                            if (!string.IsNullOrEmpty(item.value) && item.search_by == "name")
                             {
-                                whereConditionStatement += $@"{item.search_by} ILIKE '%{item.value}%' AND ";
+                                whereConditionStatement += $@"{item.search_by} LIKE '%{item.value}%' AND ";
+                            }
+                            else if (!string.IsNullOrEmpty(item.value) && item.search_by == "phone")
+                            {
+                                whereConditionStatement += $@"{item.search_by} LIKE '%{item.value}%' AND ";
                             }
                             else if (!string.IsNullOrEmpty(item.value))
                                 whereConditionStatement += item.search_by + " = '" + item.value + "' AND ";
@@ -106,18 +110,18 @@ namespace APIDotNetCore.EndPoints
 
                     #region database query code 
 
-                    var dataGrid = await _taskRawSql.GetAllByWhere(new GetAllByWhereGLB()
+                    var dataGrid = await _patientRecordRawSql.GetAllByWhere(new GetAllByWhereGLB()
                     {
-                        TableOrViewName = "Tasks",
+                        TableOrViewName = "PatientRecords",
                         SortColumn = sortInformation,
                         WhereConditions = whereConditionStatement,
                         LimitIndex = tableObj.start,
                         LimitRange = rowSize
                     });
 
-                    var dataGridCount = await _taskCountRawSql.CountAllByWhere(new CountAllByWhereGLB()
+                    var dataGridCount = await _patientRecordCountRawSql.CountAllByWhere(new CountAllByWhereGLB()
                     {
-                        TableOrViewName = "Tasks",
+                        TableOrViewName = "PatientRecords",
                         WhereConditions = whereConditionStatement
                     });
 
@@ -136,20 +140,20 @@ namespace APIDotNetCore.EndPoints
                 }
             });
 
-            app.MapGet("/task-api/get/{id}", async (long id) =>
+            app.MapGet("/patient-record-api/get/{id}", async (long id) =>
             {
                 try
                 {
                     if (id <= 0)
                         return Results.BadRequest("Request is not valid.");
 
-                    var getTask = await _task.GetById(x => x.id == id);
+                    var getPatientRecord = await _patientRecord.GetById(x => x.Id == id);
 
-                    if (getTask == null)
+                    if (getPatientRecord == null)
                     {
                         return Results.NotFound("Requested item is not found.");
                     }
-                    return Results.Ok(getTask);
+                    return Results.Ok(getPatientRecord);
                 }
                 catch (Exception ex)
                 {
@@ -158,31 +162,31 @@ namespace APIDotNetCore.EndPoints
                 }
             });
 
-            app.MapPost("/task-api/create", async (Tasks task) =>
+            app.MapPost("/patient-record-api/create", async (PatientRecords patientRecord) =>
             {
                 try
                 {
                     #region Validation
-                    if (task == null)
+                    if (patientRecord == null)
                         return Results.BadRequest("Provide valid data.");
 
-                    var validationCheck = await new TasksValidation().ValidateAsync(task);
+                    var validationCheck = await new PatientRecordsValidation().ValidateAsync(patientRecord);
 
                     if (!validationCheck.IsValid)
                         return Results.BadRequest("Provided data is not valid.");
 
                     #endregion Validation
 
-                    task.insert_date = DateTime.UtcNow;
-                    await _task.Insert(task);
+                    patientRecord.InsertDate = DateTime.UtcNow;
+                    await _patientRecord.Insert(patientRecord);
 
                     await _hubContext.Clients.All.BroadcastMessage(JsonSerializer.Serialize(new
                     {
-                        topic = "Task-Created",
-                        data = task
+                        topic = "Patient-Record-Created",
+                        data = patientRecord
                     }));
 
-                    return Results.Ok(task);
+                    return Results.Ok(patientRecord);
                 }
                 catch (Exception ex)
                 {
@@ -192,42 +196,42 @@ namespace APIDotNetCore.EndPoints
 
             });
 
-            app.MapPut("/task-api/update", async (Tasks task) =>
+            app.MapPut("/patient-record-api/update", async (PatientRecords patientRecord) =>
             {
                 try
                 {
                     #region Validation
-                    if (task.id <= 0)
+                    if (patientRecord.Id <= 0)
                         return Results.BadRequest("Provide valid data.");
 
-                    var validationCheck = await new TasksValidation().ValidateAsync(task);
+                    var validationCheck = await new PatientRecordsValidation().ValidateAsync(patientRecord);
 
                     if (!validationCheck.IsValid)
                         return Results.BadRequest("Provided data is not valid.");
 
-                    var getTask = await _task.GetById(x => x.id == task.id);
+                    var getPatientRecord = await _patientRecord.GetById(x => x.Id == patientRecord.Id);
 
-                    if (getTask == null)
+                    if (getPatientRecord == null)
                     {
                         return Results.NotFound("Requested item is not found.");
                     }
 
                     #endregion Validation
 
-                    getTask.title = task.title;
-                    getTask.details = task.details;
-                    getTask.status = task.status;
-                    getTask.progress_ratio = task.progress_ratio;
+                    getPatientRecord.Name = patientRecord.Name;
+                    getPatientRecord.Phone = patientRecord.Phone;
+                    getPatientRecord.DateOfBirth = patientRecord.DateOfBirth;
+                    getPatientRecord.Dioptres = patientRecord.Dioptres;
 
-                    await _task.Update(getTask);
+                    await _patientRecord.Update(getPatientRecord);
 
                     await _hubContext.Clients.All.BroadcastMessage(JsonSerializer.Serialize(new
                     {
-                        topic = "Task-Updated",
-                        data = getTask
+                        topic = "Patient-Record-Updated",
+                        data = getPatientRecord
                     }));
 
-                    return Results.Ok(getTask);
+                    return Results.Ok(getPatientRecord);
                 }
                 catch (Exception ex)
                 {
@@ -236,26 +240,26 @@ namespace APIDotNetCore.EndPoints
                 }
             });
 
-            app.MapDelete("/task-api/delete/{id}", async (long id) =>
+            app.MapDelete("/patient-record-api/delete/{id}", async (long id) =>
             {
                 try
                 {
                     if (id <= 0)
                         return Results.BadRequest("Data is not valid.");
 
-                    var getTask = await _task.GetById(x => x.id == id);
+                    var getPatientRecord = await _patientRecord.GetById(x => x.Id == id);
 
-                    if (getTask == null)
+                    if (getPatientRecord == null)
                     {
                         return Results.NotFound("Requested item is not found.");
                     }
 
-                    await _task.Delete(getTask);
+                    await _patientRecord.Delete(getPatientRecord);
 
                     await _hubContext.Clients.All.BroadcastMessage(JsonSerializer.Serialize(new
                     {
-                        topic = "Task-Deleted",
-                        data = getTask
+                        topic = "Patient-Record-Deleted",
+                        data = getPatientRecord
                     }));
 
                     return Results.Ok(true);

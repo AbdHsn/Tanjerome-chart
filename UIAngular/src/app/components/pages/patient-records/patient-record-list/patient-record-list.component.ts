@@ -1,26 +1,28 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Tasks, TaskStatus } from 'src/models/task-model';
-import { TasksService } from 'src/services/tasks.service';
 import { ToastService } from 'src/services/toast.service';
 import { DeleteDialogComponent } from '../../common-pages/delete-dialog/delete-dialog.component';
-import { TaskAddEditComponent } from '../task-add-edit/task-add-edit.component';
 import { SignalRResponse } from 'src/models/signal-r-response';
 import { CommonService } from 'src/services/common.service';
+import { PatientRecords } from 'src/models/patient-records-model';
+import { PatientRecordsService } from 'src/services/patient-records.service';
+import { PatientRecordAddEditComponent } from '../patient-record-add-edit/patient-record-add-edit.component';
+import * as moment from 'moment';
 
 @Component({
-  selector: 'app-task-list',
-  templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss'],
+  selector: 'patient-record-list',
+  templateUrl: './patient-record-list.component.html',
+  styleUrls: ['./patient-record-list.component.scss'],
 })
-export class TaskListComponent implements OnInit {
-  taskMdlLst: Tasks[] = [];
+export class PatientRecordListComponent implements OnInit {
+  patientRecordMdlLst: PatientRecords[] = [];
   isLoading: boolean = false;
-  searchByTitle: string = '';
+  searchByName: string = '';
+  searchByPhone: string = '';
 
   orderColumn = {
-    column: 'insert_date',
+    column: 'InsertDate',
     order_by: 'DESC',
   };
 
@@ -30,18 +32,18 @@ export class TaskListComponent implements OnInit {
   rowSizeOption = [10, 20, 50, 100, 200];
 
   constructor(
-    private _taskSrv: TasksService,
+    private _patientRecordSrv: PatientRecordsService,
     private modalService: NgbModal,
     private _toastSrv: ToastService,
     private _commonSrv: CommonService
   ) {}
 
   ngOnInit() {
-    this.getTaskGrid();
+    this.getPatientGrid();
     this.initializeSignalR();
   }
 
-  getTaskGrid() {
+  getPatientGrid() {
     try {
       let postData = {
         columns: [],
@@ -49,13 +51,16 @@ export class TaskListComponent implements OnInit {
         start: (this.page - 1) * this.rowSize,
         length: this.rowSize.toString(),
         search: {},
-        searches: [{ search_by: 'title', value: this.searchByTitle }],
+        searches: [
+          { search_by: 'name', value: this.searchByName },
+          { search_by: 'phone', value: this.searchByPhone },
+        ],
       };
 
       this.isLoading = true;
-      this._taskSrv.getGrid(postData).subscribe(
+      this._patientRecordSrv.getGrid(postData).subscribe(
         (res) => {
-          this.taskMdlLst = res.data as Tasks[];
+          this.patientRecordMdlLst = res.data as PatientRecords[];
           this.totalRecord = res.totalRecords as number;
           this.isLoading = false;
         },
@@ -75,12 +80,12 @@ export class TaskListComponent implements OnInit {
   onRowSizeOptionChange(selectedSizeOption: any): void {
     this.rowSize = selectedSizeOption.target.value;
     this.page = 1;
-    this.getTaskGrid();
+    this.getPatientGrid();
   }
 
   onPaginationChange(pageNumber: any) {
     this.page = pageNumber;
-    this.getTaskGrid();
+    this.getPatientGrid();
   }
 
   onOrderByClick(columnName: string) {
@@ -89,53 +94,53 @@ export class TaskListComponent implements OnInit {
 
     this.orderColumn.column = columnName;
 
-    this.getTaskGrid();
+    this.getPatientGrid();
   }
 
-  onCreateTaskClick() {
-    const modalRef = this.modalService.open(TaskAddEditComponent);
-    modalRef.componentInstance.title = 'Create Task';
-    modalRef.componentInstance.taskMdl = {};
+  onCreateClick() {
+    const modalRef = this.modalService.open(PatientRecordAddEditComponent);
+    modalRef.componentInstance.title = 'Create Patient Record';
+    modalRef.componentInstance.patientRecordMdl = {};
     modalRef.result.then(
       (result) => {
-        //this.getTaskGrid();
+        //this.getPatientGrid();
       },
       (reason) => {}
     );
   }
 
-  onEditClick(item: Tasks) {
-    const modalRef = this.modalService.open(TaskAddEditComponent);
-    modalRef.componentInstance.title = 'Update Task';
+  onEditClick(item: PatientRecords) {
+    const modalRef = this.modalService.open(PatientRecordAddEditComponent);
+    modalRef.componentInstance.title = 'Update Patient Record';
 
-    modalRef.componentInstance.taskMdl = Object.assign({}, item);
+    modalRef.componentInstance.patientRecordMdl = Object.assign({}, item);
     modalRef.result.then(
       (result) => {
-        // this.getTaskGrid();
+        // this.getPatientGrid();
       },
       (reason) => {}
     );
   }
 
-  onDeleteClick(item: Tasks) {
+  onDeleteClick(item: PatientRecords) {
     try {
       const modalRef = this.modalService.open(DeleteDialogComponent, {
         centered: true,
       });
-      modalRef.componentInstance.title = `Task "${item.title}"`;
+      modalRef.componentInstance.title = `Patient "${item.name}"`;
       modalRef.result.then((result) => {
         if (result as boolean) {
-          this._taskSrv.Delete(item.id).subscribe(
+          this._patientRecordSrv.Delete(item.id).subscribe(
             (res) => {
               if (res as boolean) {
                 this._toastSrv.show(
-                  `Task ${item.title} successfully deleted.`,
+                  `Patient ${item.name} successfully deleted.`,
                   {
                     classname: 'bg-success text-light',
                     delay: 10000,
                   }
                 );
-                //this.getTaskGrid();
+                //this.getPatientGrid();
               }
             },
             (error: HttpErrorResponse) => {
@@ -150,9 +155,15 @@ export class TaskListComponent implements OnInit {
     } catch (error) {}
   }
 
-  onSearchByTitle(event: any) {
+  onSearchByName(event: any) {
     if (event.key === 'Enter') {
-      this.getTaskGrid();
+      this.getPatientGrid();
+    }
+  }
+
+  onSearchByPhone(event: any) {
+    if (event.key === 'Enter') {
+      this.getPatientGrid();
     }
   }
 
@@ -161,33 +172,33 @@ export class TaskListComponent implements OnInit {
 
     connection.on('BroadcastMessage', (result) => {
       let getTopic = JSON.parse(result as string) as SignalRResponse;
-      let latestTask = getTopic.data as Tasks;
+      let latestPatientRecord = getTopic.data as PatientRecords;
 
       switch (getTopic.topic) {
-        case 'Task-Created': {
-          this.taskMdlLst.push(latestTask);
+        case 'Patient-Record-Created': {
+          this.patientRecordMdlLst.push(latestPatientRecord);
           this.totalRecord = this.totalRecord + 1;
           break;
         }
-        case 'Task-Updated': {
-          let getExistedTask = this.taskMdlLst.find(
-            (f) => f.id == latestTask.id
+        case 'Patient-Record-Updated': {
+          let getExistedTask = this.patientRecordMdlLst.find(
+            (f) => f.id == latestPatientRecord.id
           );
           if (getExistedTask) {
-            getExistedTask.title = latestTask.title;
-            getExistedTask.details = latestTask.details;
-            getExistedTask.progress_ratio = latestTask.progress_ratio;
-            getExistedTask.status = latestTask.status;
+            getExistedTask.name = latestPatientRecord.name;
+            getExistedTask.phone = latestPatientRecord.phone;
+            getExistedTask.dioptres = latestPatientRecord.dioptres;
+            getExistedTask.dateOfBirth = latestPatientRecord.dateOfBirth;
           }
           break;
         }
-        case 'Task-Deleted': {
-          let getExistedTask = this.taskMdlLst.find(
-            (f) => f.id == latestTask.id
+        case 'Patient-Record-Deleted': {
+          let getExistedTask = this.patientRecordMdlLst.find(
+            (f) => f.id == latestPatientRecord.id
           );
           if (getExistedTask) {
-            this.taskMdlLst = this.taskMdlLst.filter(
-              (f) => f.id != latestTask.id
+            this.patientRecordMdlLst = this.patientRecordMdlLst.filter(
+              (f) => f.id != latestPatientRecord.id
             );
           }
           this.totalRecord = this.totalRecord - 1;
@@ -199,7 +210,7 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  showStandard() {
-    this._toastSrv.show('I am a standard toast');
+  calculateAge(birthdate: any): number {
+    return moment().diff(birthdate, 'years');
   }
 }

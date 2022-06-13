@@ -1,7 +1,7 @@
 <div class="shadow bg-white rounded mb-3 p-3">
   <div class="row">
     <div class="col-12">
-      <label class="h4">Task List</label>
+      <label class="h4">Patient Records</label>
     </div>
   </div>
 
@@ -15,7 +15,7 @@
           <option *ngFor="let item of rowSizeOption" [value]="item">{{item}}</option>
         </select>
 
-        <button class="btn btn-sm btn-info" (click)="onCreateTaskClick()"><Span></Span> New Task</button>
+        <button class="btn btn-sm btn-info" (click)="onCreateClick()"><Span></Span> New Record</button>
       </div>
     </div>
     <div class="col-lg-8 col-sm-12">
@@ -23,8 +23,14 @@
         <div class="col-lg-8 col-sm-12"></div>
         <div class="col-lg-4 col-sm-12">
           <div class="input-group">
-            <input [(ngModel)]="searchByTitle" (keyup)="onSearchByTitle($event)" type="text" class="form-control"
-              placeholder="Search By Title" aria-label="Search" aria-describedby="basic-addon2">
+            <input [(ngModel)]="searchByName" id="searchByName" name="searchByName" (keyup)="onSearchByName($event)"
+              type="text" class="form-control" placeholder="Search By Name" aria-label="Search"
+              aria-describedby="basic-addon2">
+
+            <input [(ngModel)]="onSearchByPhone" id="onSearchByPhone" name="onSearchByPhone"
+              (keyup)="onSearchByPhone($event)" type="text" class="form-control" placeholder="Search By Phone"
+              aria-label="Search" aria-describedby="basic-addon2">
+
           </div>
         </div>
       </div>
@@ -41,19 +47,20 @@
             <th scope="col" class="cursor-pointer" (click)="onOrderByClick('id')"><span class="{{orderColumn.column == 'id' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span> Id</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('title')"> <span class="{{orderColumn.column == 'title' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('name')"> <span class="{{orderColumn.column == 'name' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
-                ''}}"></span> Title</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('details')"> <span class="{{orderColumn.column == 'details' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                ''}}"></span> Name</th>
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('phone')"> <span class="{{orderColumn.column == 'phone' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
-                ''}}"></span> Details</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('progress_ratio')"> <span class="{{orderColumn.column == 'progress_ratio' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                ''}}"></span> Phone</th>
+
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('dioptres')"> <span class="{{orderColumn.column == 'dioptres' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
-                ''}}"></span> Progress</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('status')"> <span class="{{orderColumn.column == 'status' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                ''}}"></span> Dioptres</th>
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('dateOfBirth')"> <span class="{{orderColumn.column == 'dateOfBirth' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
-                ''}}"></span> Status</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('insert_date')"> <span class="{{orderColumn.column == 'insert_date' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+                ''}}"></span> Date Of Birth</th>
+            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('insertDate')"> <span class="{{orderColumn.column == 'insertDate' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span> Insert Date</th>
             <th scope="col">Options</th>
@@ -67,30 +74,17 @@
               </div><span class="text-warning p-2">Loading...</span>
             </td>
           </tr>
-          <tr *ngFor="let item of taskMdlLst">
+          <tr *ngFor="let item of patientRecordMdlLst">
             <th scope="row">{{item.id}}</th>
             <td>
-              {{ item.title }}
+              {{ item.name }}
             </td>
-            <td>{{ item.details }}</td>
+            <td>{{ item.phone }}</td>
+            <td>{{ item.dioptres }}</td>
+            <td>{{calculateAge(item.dateOfBirth)}} Age, {{ item.dateOfBirth }}</td>
             <td>
-              <p>
-                <ngb-progressbar type=" warning" [value]="item.progress_ratio" [striped]="true" [animated]="true">
-                  <i>{{item.progress_ratio}}%</i></ngb-progressbar>
-              </p>
-            </td>
-            <td>
-              <button *ngIf="item.status" type="button"
-                class="btn btn-sm
-                 {{item.status == 'Completed' ? 'btn-success' : item.status == 'InProgress' ? 'btn-info': 'btn-danger'}}">
-                {{ item.status }}</button>
-            </td>
-            <td>
-              <div class="row" *ngIf="item.insert_date != null">
-                <small><span class="fa fa-clock-o"> {{item.insert_date | date: "HH:mm a"}}</span> </small>
-              </div>
-              <div class="row" *ngIf="item.insert_date != null">
-                <small> <span class="fa fa-calendar"></span> {{item.insert_date | date: "dd-MMM-yyyy"}}</small>
+              <div class="row" *ngIf="item.insertDate != null">
+                <small> <span class="fa fa-calendar"></span> {{item.insertDate | date: "dd-MMM-yyyy"}}</small>
               </div>
             </td>
 
@@ -99,7 +93,7 @@
               <button class="btn btn-sm btn-outline-danger" (click)="onDeleteClick(item)">Delete</button>
             </td>
           </tr>
-          <tr *ngIf="!isLoading && taskMdlLst.length <= 0">
+          <tr *ngIf="!isLoading && patientRecordMdlLst.length <= 0">
             <td colspan="100" class="text-center">
               <span class="text-info p-2">No Records</span>
             </td>

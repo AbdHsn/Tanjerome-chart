@@ -12,9 +12,9 @@ import { NgxNavbarModule } from 'ngx-bootstrap-navbar';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonService } from 'src/services/common.service';
 import { ToastService } from 'src/services/toast.service';
-import { TasksService } from 'src/services/tasks.service';
 import { ToastsContainer } from 'src/services/ToastsContainer.component';
 import { NgbdToastGlobal } from './components/pages/common-pages/toast-global/toast-global.component';
+import { PatientRecordsService } from 'src/services/patient-records.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { NgbdToastGlobal } from './components/pages/common-pages/toast-global/to
     NoopAnimationsModule,
     HttpClientModule,
   ],
-  providers: [HttpClient, CommonService, ToastService, TasksService],
+  providers: [HttpClient, CommonService, ToastService, PatientRecordsService],
   bootstrap: [AppComponent, NgbdToastGlobal],
 })
 export class AppModule {}

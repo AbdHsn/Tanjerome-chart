@@ -13,13 +13,13 @@ builder.Services.AddCors();
 
 builder.Services.AddDbContext<EntityContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration["ConnectionStrings:DefaultConnection"]);
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
 });
 
 #region DI
 builder.Services.AddTransient(typeof(IEntityRepo<>), typeof(EntityRepo<>));
 builder.Services.AddTransient(typeof(IRawQueryRepo<>), typeof(RawQueryRepo<>));
-builder.Services.AddTransient<TasksApi>();
+builder.Services.AddTransient<PatientRecordsApi>();
 #endregion
 
 string CorsPolicy = "CorsPolicy";
@@ -49,8 +49,8 @@ app.UseCors(CorsPolicy);
 app.UseHttpsRedirection();
 
 var scope = app.Services.CreateAsyncScope();
-var services = scope.ServiceProvider.GetService<TasksApi>();
-await services.TaskAPIEndPoints(app);
+var services = scope.ServiceProvider.GetService<PatientRecordsApi>();
+await services.PatientRecordsAPIEndPoints(app);
 
 app.MapHub<BroadcastHub>("/broadcast-message", options =>
 {

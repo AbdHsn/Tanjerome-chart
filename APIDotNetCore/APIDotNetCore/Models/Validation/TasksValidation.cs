@@ -3,14 +3,13 @@ using FluentValidation;
 
 namespace APIDotNetCore.Models.Validation
 {
-    public class TasksValidation : AbstractValidator<Tasks>
+    public class PatientRecordsValidation : AbstractValidator<PatientRecords>
     {
-        public TasksValidation()
+        public PatientRecordsValidation()
         {
-            RuleFor(r => r.title).NotNull().NotEmpty();
-            RuleFor(r => r.details).NotNull().NotEmpty();
-            RuleFor(r => r.progress_ratio).GreaterThanOrEqualTo(0).LessThanOrEqualTo(100);
-            RuleFor(r => r.status).NotNull().NotEmpty();
+            RuleFor(r => r.Name).NotNull().NotEmpty();
+            RuleFor(r => r.Phone).NotNull().NotEmpty();
+            RuleFor(r => r.Dioptres).GreaterThanOrEqualTo(0).LessThanOrEqualTo(500);
         }
     }
 }
