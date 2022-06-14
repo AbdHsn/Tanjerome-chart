@@ -44,8 +44,8 @@
       <div class="position-relative form-group mt-2 m-1">
         <label for="iDOB">Date Of Birth</label>
         <div class="input-group">
-          <input [(ngModel)]="patientRecordMdl.dateOfBirth" ngbDatepicker #d="ngbDatepicker" #iDOB="ngModel" name="iDOB"
-            id="iDOB" placeholder="yyyy-mm-dd" type="text" class="form-control" required />
+          <input [(ngModel)]="patientRecordMdl.dateOfBirthObject" ngbDatepicker #d="ngbDatepicker" #iDOB="ngModel"
+            name="iDOB" id="iDOB" placeholder="yyyy-mm-dd" type="text" class="form-control" required />
           <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar"
               aria-hidden="true"></i></button>
         </div>

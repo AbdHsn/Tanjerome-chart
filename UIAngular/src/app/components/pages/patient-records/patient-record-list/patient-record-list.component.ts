@@ -169,48 +169,55 @@ export class PatientRecordListComponent implements OnInit {
 
   initializeSignalR() {
     let connection = this._commonSrv.signalRConnectionInitilization();
+    console.log('signalR connection....', connection);
 
     connection.on('BroadcastMessage', (result) => {
-      let getTopic = JSON.parse(result as string) as SignalRResponse;
-      let latestPatientRecord = getTopic.data as PatientRecords;
+      this.getPatientGrid();
 
-      switch (getTopic.topic) {
-        case 'Patient-Record-Created': {
-          this.patientRecordMdlLst.push(latestPatientRecord);
-          this.totalRecord = this.totalRecord + 1;
-          break;
-        }
-        case 'Patient-Record-Updated': {
-          let getExistedTask = this.patientRecordMdlLst.find(
-            (f) => f.id == latestPatientRecord.id
-          );
-          if (getExistedTask) {
-            getExistedTask.name = latestPatientRecord.name;
-            getExistedTask.phone = latestPatientRecord.phone;
-            getExistedTask.dioptres = latestPatientRecord.dioptres;
-            getExistedTask.dateOfBirth = latestPatientRecord.dateOfBirth;
-          }
-          break;
-        }
-        case 'Patient-Record-Deleted': {
-          let getExistedTask = this.patientRecordMdlLst.find(
-            (f) => f.id == latestPatientRecord.id
-          );
-          if (getExistedTask) {
-            this.patientRecordMdlLst = this.patientRecordMdlLst.filter(
-              (f) => f.id != latestPatientRecord.id
-            );
-          }
-          this.totalRecord = this.totalRecord - 1;
-          break;
-        }
-        default:
-          break;
-      }
+      // let getTopic = JSON.parse(result as string) as SignalRResponse;
+      // let latestPatientRecord = getTopic.data as PatientRecords;
+
+      // console.log(
+      //   'signalR connected data....',
+      //   result,
+      //   getTopic,
+      //   latestPatientRecord
+      // );
+
+      // switch (getTopic.topic) {
+      //   case 'Patient-Record-Created': {
+      //     this.patientRecordMdlLst.push(latestPatientRecord);
+      //     this.totalRecord = this.totalRecord + 1;
+      //     break;
+      //   }
+      //   case 'Patient-Record-Updated': {
+      //     let getExistedData = this.patientRecordMdlLst.find(
+      //       (f) => f.id == latestPatientRecord.id
+      //     );
+      //     if (getExistedData) {
+      //       getExistedData.name = latestPatientRecord.name;
+      //       getExistedData.phone = latestPatientRecord.phone;
+      //       getExistedData.dioptres = latestPatientRecord.dioptres;
+      //       getExistedData.dateOfBirth = latestPatientRecord.dateOfBirth;
+      //       getExistedData.age = latestPatientRecord.age;
+      //     }
+      //     break;
+      //   }
+      //   case 'Patient-Record-Deleted': {
+      //     let getExistedData = this.patientRecordMdlLst.find(
+      //       (f) => f.id == latestPatientRecord.id
+      //     );
+      //     if (getExistedData) {
+      //       this.patientRecordMdlLst = this.patientRecordMdlLst.filter(
+      //         (f) => f.id != latestPatientRecord.id
+      //       );
+      //     }
+      //     this.totalRecord = this.totalRecord - 1;
+      //     break;
+      //   }
+      //   default:
+      //     break;
+      // }
     });
-  }
-
-  calculateAge(birthdate: any): number {
-    return moment().diff(birthdate, 'years');
   }
 }

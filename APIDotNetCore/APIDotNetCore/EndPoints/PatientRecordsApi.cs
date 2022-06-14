@@ -129,7 +129,15 @@ namespace APIDotNetCore.EndPoints
 
                     return Results.Ok(new
                     {
-                        data = dataGrid,
+                        data = dataGrid.Select(s => new PatientRecords { 
+                            Id = s.Id,
+                            Name = s.Name,
+                            Phone = s.Phone,
+                            Dioptres = s.Dioptres,
+                            DateOfBirth = s.DateOfBirth,
+                            InsertDate = s.InsertDate,
+                            Age = DateTime.Now.DayOfYear < s.DateOfBirth.Value.DayOfYear ? DateTime.Now.Year - s.DateOfBirth.Value.Year : DateTime.Now.Year - s.DateOfBirth.Value.Year
+                        }),
                         totalRecords = dataGridCount.totalrecord
                     });
                 }
@@ -180,6 +188,9 @@ namespace APIDotNetCore.EndPoints
                     patientRecord.InsertDate = DateTime.UtcNow;
                     await _patientRecord.Insert(patientRecord);
 
+                    patientRecord.Age = DateTime.Now.DayOfYear < patientRecord.DateOfBirth.Value.DayOfYear ? DateTime.Now.Year - patientRecord.DateOfBirth.Value.Year  : DateTime.Now.Year - patientRecord.DateOfBirth.Value.Year;
+
+
                     await _hubContext.Clients.All.BroadcastMessage(JsonSerializer.Serialize(new
                     {
                         topic = "Patient-Record-Created",
@@ -224,6 +235,8 @@ namespace APIDotNetCore.EndPoints
                     getPatientRecord.Dioptres = patientRecord.Dioptres;
 
                     await _patientRecord.Update(getPatientRecord);
+
+                    getPatientRecord.Age = DateTime.Now.DayOfYear < getPatientRecord.DateOfBirth.Value.DayOfYear ? DateTime.Now.Year - getPatientRecord.DateOfBirth.Value.Year : DateTime.Now.Year - getPatientRecord.DateOfBirth.Value.Year;
 
                     await _hubContext.Clients.All.BroadcastMessage(JsonSerializer.Serialize(new
                     {

@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DataLayer.Models.Entities
 {
     public class PatientRecords
@@ -9,5 +11,7 @@ namespace DataLayer.Models.Entities
         public decimal? Dioptres { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public DateTime? InsertDate { get; set; }
+        [NotMapped]
+        public int? Age { get; set; }
     }
 }

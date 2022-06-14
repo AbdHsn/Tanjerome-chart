@@ -6,6 +6,12 @@
   </div>
 
   <div class="row mt-2">
+
+    <div class="col-md-6 col-lg-6 col-sm-12 mb-2">
+      <chart-view></chart-view>
+    </div>
+    <div class="col-6 col-sm-12"></div>
+
     <div class="col-lg-4 col-sm-12">
       <div class="input-group">
         <label class="input-group-text" for="inputGroupSelect01">Total Records: {{totalRecord}}</label>
@@ -27,7 +33,7 @@
               type="text" class="form-control" placeholder="Search By Name" aria-label="Search"
               aria-describedby="basic-addon2">
 
-            <input [(ngModel)]="onSearchByPhone" id="onSearchByPhone" name="onSearchByPhone"
+            <input [(ngModel)]="searchByPhone" id="onSearchByPhone" name="onSearchByPhone"
               (keyup)="onSearchByPhone($event)" type="text" class="form-control" placeholder="Search By Phone"
               aria-label="Search" aria-describedby="basic-addon2">
 
@@ -80,8 +86,20 @@
               {{ item.name }}
             </td>
             <td>{{ item.phone }}</td>
-            <td>{{ item.dioptres }}</td>
-            <td>{{calculateAge(item.dateOfBirth)}} Age, {{ item.dateOfBirth }}</td>
+            <td>
+              <p>
+                <button type="button" *ngIf="item.dioptres >= 6" class="badge badge-danger text-danger">
+                  {{  item.dioptres }} - High
+                  Risk</button>
+                <button type="button" *ngIf="(item.dioptres >= 3 && item.dioptres < 6)"
+                  class="badge badge-danger text-warning"> {{  item.dioptres }} - Moderate Risk</button>
+                <button type="button" *ngIf="(item.dioptres >= 1 && item.dioptres < 3)"
+                  class="badge badge-danger text-info"> {{  item.dioptres }} - Low Risk</button>
+                <button type="button" *ngIf="(item.dioptres >= 0 && item.dioptres < 1)"
+                  class="badge badge-danger text-success"> {{  item.dioptres }} - Little to no Risk</button>
+              </p>
+            </td>
+            <td>{{item.age}} Age, {{ item.dateOfBirth | date: "dd-MMM-yyyy" }}</td>
             <td>
               <div class="row" *ngIf="item.insertDate != null">
                 <small> <span class="fa fa-calendar"></span> {{item.insertDate | date: "dd-MMM-yyyy"}}</small>

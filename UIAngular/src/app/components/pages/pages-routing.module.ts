@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { NoPageFountComponent } from './no-page-fount/no-page-fount.component';
 import { PatientRecordListComponent } from './patient-records/patient-record-list/patient-record-list.component';
+import { ChartViewComponent } from './patient-records/chart-view/chart-view.component';
 
 const routes: Routes = [
   {

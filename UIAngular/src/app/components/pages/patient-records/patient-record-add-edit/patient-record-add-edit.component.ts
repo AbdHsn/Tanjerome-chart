@@ -22,13 +22,35 @@ export class PatientRecordAddEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.patientRecordMdl.id <= 0) {
-      //this.patientRecordMdl.status = null;
-    }
+    // if (this.patientRecordMdl.id > 0) {
+    //   //this.patientRecordMdl.status = null;
+    //   var year = this.patientRecordMdl.dateOfBirth?.getFullYear();
+    //   var month = this.patientRecordMdl.dateOfBirth?.getMonth();
+    //   var day = this.patientRecordMdl.dateOfBirth?.getDay();
+    //   console.log(year, month, day);
+    //   this.patientRecordMdl.dateOfBirthObject = {
+    //     year: this.patientRecordMdl.dateOfBirth?.getFullYear(),
+    //     month: this.patientRecordMdl.dateOfBirth?.getMonth(),
+    //     day: this.patientRecordMdl.dateOfBirth?.getDay(),
+    //   };
+    //   console.log(
+    //     'update ---',
+    //     this.patientRecordMdl,
+    //     this.patientRecordMdl.dateOfBirth?.getFullYear(),
+    //     this.patientRecordMdl.dateOfBirth?.getMonth(),
+    //     this.patientRecordMdl.dateOfBirth?.getDay()
+    //   );
+    // }
   }
 
   savePatientRecord() {
     try {
+      this.patientRecordMdl.dateOfBirth = new Date(
+        this.patientRecordMdl.dateOfBirthObject.year,
+        this.patientRecordMdl.dateOfBirthObject.month,
+        this.patientRecordMdl.dateOfBirthObject.day
+      );
+
       if (this.patientRecordMdl.id > 0) {
         this.isProcessing = true;
         this._patientRecordSrv
