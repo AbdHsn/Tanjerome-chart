@@ -7,9 +7,14 @@ export class PatientRecords {
   dateOfBirthObject: any | null;
   insertDate: Date | null;
   age: number = 0;
+  chartData: ChartData;
 }
 
 export enum Status {
   Completed = 'Completed',
   Incompleted = 'Incompleted',
+}
+export class ChartData {
+  label: number[] = [];
+  data: number[] = [];
 }

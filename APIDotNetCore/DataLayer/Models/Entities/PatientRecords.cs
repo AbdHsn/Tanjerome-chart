@@ -13,5 +13,7 @@ namespace DataLayer.Models.Entities
         public DateTime? InsertDate { get; set; }
         [NotMapped]
         public int? Age { get; set; }
+        [NotMapped]
+        public object? ChartData { get; set; }
     }
 }
