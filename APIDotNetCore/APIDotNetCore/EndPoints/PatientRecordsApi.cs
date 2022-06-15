@@ -127,17 +127,40 @@ namespace APIDotNetCore.EndPoints
 
                     #endregion database query code
 
+                    #region ChartData
+                    var createLabel = new List<int> { 
+                    6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,
+                    };
+
+                    //var chartValues = new List<PatientRecords>();
+
+                    foreach (var patientItem in dataGrid)
+                    {
+                        patientItem.Age = DateTime.Now.Year - patientItem.DateOfBirth.Value.Year;
+
+                        var patientChartData = new List<decimal>();
+                        foreach (var item in createLabel)
+                        {
+                            patientChartData.Add( 
+                               DateTime.Now.Year - patientItem.DateOfBirth.Value.Year == item ? (decimal)patientItem.Dioptres : 0
+                            );
+
+                            //patientChart.Dioptres = DateTime.Now.Year - patientItem.DateOfBirth.Value.Year == item ? patientItem.Dioptres : 0;
+                        }
+
+                        patientItem.ChartData = new
+                        {
+                            label = createLabel,
+                            data = patientChartData
+                        };
+                    }
+
+
+                    #endregion
+
                     return Results.Ok(new
                     {
-                        data = dataGrid.Select(s => new PatientRecords { 
-                            Id = s.Id,
-                            Name = s.Name,
-                            Phone = s.Phone,
-                            Dioptres = s.Dioptres,
-                            DateOfBirth = s.DateOfBirth,
-                            InsertDate = s.InsertDate,
-                            Age = DateTime.Now.DayOfYear < s.DateOfBirth.Value.DayOfYear ? DateTime.Now.Year - s.DateOfBirth.Value.Year : DateTime.Now.Year - s.DateOfBirth.Value.Year
-                        }),
+                        data = dataGrid,
                         totalRecords = dataGridCount.totalrecord
                     });
                 }

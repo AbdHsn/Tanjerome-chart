@@ -5,10 +5,11 @@ import { ToastService } from 'src/services/toast.service';
 import { DeleteDialogComponent } from '../../common-pages/delete-dialog/delete-dialog.component';
 import { SignalRResponse } from 'src/models/signal-r-response';
 import { CommonService } from 'src/services/common.service';
-import { PatientRecords } from 'src/models/patient-records-model';
+import { ChartData, PatientRecords } from 'src/models/patient-records-model';
 import { PatientRecordsService } from 'src/services/patient-records.service';
 import { PatientRecordAddEditComponent } from '../patient-record-add-edit/patient-record-add-edit.component';
 import * as moment from 'moment';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'patient-record-list',
@@ -63,6 +64,10 @@ export class PatientRecordListComponent implements OnInit {
           this.patientRecordMdlLst = res.data as PatientRecords[];
           this.totalRecord = res.totalRecords as number;
           this.isLoading = false;
+
+          if (this.patientRecordMdlLst.length > 0) {
+            this.drawPatientBarChart(this.patientRecordMdlLst[0].chartData);
+          }
         },
         (error: HttpErrorResponse) => {
           this.isLoading = false;
@@ -218,6 +223,49 @@ export class PatientRecordListComponent implements OnInit {
       //   default:
       //     break;
       // }
+    });
+  }
+
+  populateChartData(item: ChartData) {
+    console.log('item clicked....', item);
+    this.drawPatientBarChart(item);
+  }
+
+  public patientBarChart: any;
+  drawPatientBarChart(chartModel: ChartData) {
+    let chartStatus = Chart.getChart('patientBarChart'); // <canvas> id
+    if (chartStatus != undefined) {
+      chartStatus.destroy();
+    }
+
+    this.patientBarChart = new Chart('patientBarChart', {
+      type: 'bar',
+      data: {
+        // labels: model.map((t) =>
+        //   this.datePipe.transform(t.CreatedDate, 'dd-MM-yy hh:mm')
+        // ),
+        labels: chartModel.label,
+        datasets: [
+          {
+            label: 'Pyopia Progression',
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgb(75, 192, 192, 0.2)',
+            //data: model.map((t) => t.CurrentOnline),
+            data: chartModel.data,
+
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            min: 0,
+            max: 10,
+          },
+        },
+      },
     });
   }
 }
