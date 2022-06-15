@@ -178,56 +178,10 @@ export class PatientRecordListComponent implements OnInit {
 
     connection.on('BroadcastMessage', (result) => {
       this.getPatientGrid();
-
-      // let getTopic = JSON.parse(result as string) as SignalRResponse;
-      // let latestPatientRecord = getTopic.data as PatientRecords;
-
-      // console.log(
-      //   'signalR connected data....',
-      //   result,
-      //   getTopic,
-      //   latestPatientRecord
-      // );
-
-      // switch (getTopic.topic) {
-      //   case 'Patient-Record-Created': {
-      //     this.patientRecordMdlLst.push(latestPatientRecord);
-      //     this.totalRecord = this.totalRecord + 1;
-      //     break;
-      //   }
-      //   case 'Patient-Record-Updated': {
-      //     let getExistedData = this.patientRecordMdlLst.find(
-      //       (f) => f.id == latestPatientRecord.id
-      //     );
-      //     if (getExistedData) {
-      //       getExistedData.name = latestPatientRecord.name;
-      //       getExistedData.phone = latestPatientRecord.phone;
-      //       getExistedData.dioptres = latestPatientRecord.dioptres;
-      //       getExistedData.dateOfBirth = latestPatientRecord.dateOfBirth;
-      //       getExistedData.age = latestPatientRecord.age;
-      //     }
-      //     break;
-      //   }
-      //   case 'Patient-Record-Deleted': {
-      //     let getExistedData = this.patientRecordMdlLst.find(
-      //       (f) => f.id == latestPatientRecord.id
-      //     );
-      //     if (getExistedData) {
-      //       this.patientRecordMdlLst = this.patientRecordMdlLst.filter(
-      //         (f) => f.id != latestPatientRecord.id
-      //       );
-      //     }
-      //     this.totalRecord = this.totalRecord - 1;
-      //     break;
-      //   }
-      //   default:
-      //     break;
-      // }
     });
   }
 
   populateChartData(item: ChartData) {
-    console.log('item clicked....', item);
     this.drawPatientBarChart(item);
   }
 

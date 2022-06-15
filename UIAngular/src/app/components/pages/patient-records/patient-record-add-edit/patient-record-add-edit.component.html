@@ -41,13 +41,25 @@
         </div>
       </div>
 
-      <div class="position-relative form-group mt-2 m-1">
+      <!-- <div class="position-relative form-group mt-2 m-1">
         <label for="iDOB">Date Of Birth</label>
         <div class="input-group">
           <input [(ngModel)]="patientRecordMdl.dateOfBirthObject" ngbDatepicker #d="ngbDatepicker" #iDOB="ngModel"
             name="iDOB" id="iDOB" placeholder="yyyy-mm-dd" type="text" class="form-control" required />
           <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar"
               aria-hidden="true"></i></button>
+        </div>
+
+        <div *ngIf="iDOB.invalid && iDOB.dirty">
+          <label class="text-warning" *ngIf="iDOB.errors?.required">Date of birth is required.</label>
+        </div>
+      </div> -->
+
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iDOB">Date Of Birth</label>
+        <div class="input-group">
+          <input [(ngModel)]="patientRecordMdl.dateOfBirthObject" #iDOB="ngModel" type="date"
+            pattern="\d{4}-\d{2}-\d{2}" name="iDOB" id="iDOB" placeholder="yyyy-mm-dd" class="form-control" required />
         </div>
 
         <div *ngIf="iDOB.invalid && iDOB.dirty">
