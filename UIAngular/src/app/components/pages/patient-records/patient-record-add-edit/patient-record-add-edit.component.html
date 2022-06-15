@@ -58,13 +58,14 @@
       <div class="position-relative form-group mt-2 m-1">
         <label for="iDOB">Date Of Birth</label>
         <div class="input-group">
-          <input [(ngModel)]="patientRecordMdl.dateOfBirthObject" #iDOB="ngModel" type="date"
-            pattern="\d{4}-\d{2}-\d{2}" name="iDOB" id="iDOB" placeholder="yyyy-mm-dd" class="form-control" required />
+          <input [(ngModel)]="patientRecordMdl.dateOfBirthObject" type="date" placeholder="YYYY-MM-DD"
+            pattern="(?:19|20)\[0-9\]{2}-(?:(?:0\[1-9\]|1\[0-2\])/(?:0\[1-9\]|1\[0-9\]|2\[0-9\])|(?:(?!02)(?:0\[1-9\]|1\[0-2\])/(?:30))|(?:(?:0\[13578\]|1\[02\])-31))"
+            name="iDOB" id="iDOB" class="form-control" required />
         </div>
 
-        <div *ngIf="iDOB.invalid && iDOB.dirty">
+        <!-- <div *ngIf="iDOB.invalid && iDOB.dirty">
           <label class="text-warning" *ngIf="iDOB.errors?.required">Date of birth is required.</label>
-        </div>
+        </div> -->
       </div>
 
 
