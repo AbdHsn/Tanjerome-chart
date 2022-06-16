@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/services/toast.service';
 import { PatientRecords } from 'src/models/patient-records-model';
 import { PatientRecordsService } from 'src/services/patient-records.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'patient-record-add-edit',
@@ -22,34 +23,18 @@ export class PatientRecordAddEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // if (this.patientRecordMdl.id > 0) {
-    //   //this.patientRecordMdl.status = null;
-    //   var year = this.patientRecordMdl.dateOfBirth?.getFullYear();
-    //   var month = this.patientRecordMdl.dateOfBirth?.getMonth();
-    //   var day = this.patientRecordMdl.dateOfBirth?.getDay();
-    //   console.log(year, month, day);
-    //   this.patientRecordMdl.dateOfBirthObject = {
-    //     year: this.patientRecordMdl.dateOfBirth?.getFullYear(),
-    //     month: this.patientRecordMdl.dateOfBirth?.getMonth(),
-    //     day: this.patientRecordMdl.dateOfBirth?.getDay(),
-    //   };
-    //   console.log(
-    //     'update ---',
-    //     this.patientRecordMdl,
-    //     this.patientRecordMdl.dateOfBirth?.getFullYear(),
-    //     this.patientRecordMdl.dateOfBirth?.getMonth(),
-    //     this.patientRecordMdl.dateOfBirth?.getDay()
-    //   );
-    // }
+    if (this.patientRecordMdl.id > 0) {
+      this.patientRecordMdl.dateOfBirth = moment(
+        this.patientRecordMdl.dateOfBirth
+      ).format('YYYY-MM-DD');
+    }
   }
 
   savePatientRecord() {
     try {
-      this.patientRecordMdl.dateOfBirth = new Date(
-        this.patientRecordMdl.dateOfBirthObject.year,
-        this.patientRecordMdl.dateOfBirthObject.month,
-        this.patientRecordMdl.dateOfBirthObject.day
-      );
+      this.patientRecordMdl.dateOfBirth = moment(
+        this.patientRecordMdl.dateOfBirth
+      ).format('YYYY-MM-DD');
 
       if (this.patientRecordMdl.id > 0) {
         this.isProcessing = true;

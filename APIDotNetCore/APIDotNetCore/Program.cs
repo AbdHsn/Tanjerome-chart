@@ -30,8 +30,9 @@ builder.Services.AddCors(options => options.AddPolicy(name: CorsPolicy,
                .AllowAnyMethod()
                .AllowAnyOrigin()
                .WithOrigins(
-                                "http://localhost:4300",
-                                "https://localhost:4300"
+                                "http://3.129.206.72",
+                                "http://localhost:4200",
+                                "http://localhost:4300"
                             )
                            .WithMethods("POST", "GET", "PUT", "DELETE")
                            .AllowCredentials();
@@ -46,7 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(CorsPolicy);
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 var scope = app.Services.CreateAsyncScope();
 var services = scope.ServiceProvider.GetService<PatientRecordsApi>();

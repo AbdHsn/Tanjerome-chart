@@ -208,6 +208,9 @@ namespace APIDotNetCore.EndPoints
 
                     #endregion Validation
 
+                    if (string.IsNullOrEmpty(patientRecord.PatientId))
+                        patientRecord.PatientId = "create new.....";
+
                     patientRecord.InsertDate = DateTime.UtcNow;
                     await _patientRecord.Insert(patientRecord);
 
@@ -252,6 +255,7 @@ namespace APIDotNetCore.EndPoints
 
                     #endregion Validation
 
+                    getPatientRecord.PatientId = patientRecord.PatientId;
                     getPatientRecord.Name = patientRecord.Name;
                     getPatientRecord.Phone = patientRecord.Phone;
                     getPatientRecord.DateOfBirth = patientRecord.DateOfBirth;

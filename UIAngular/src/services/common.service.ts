@@ -1,9 +1,12 @@
 import * as signalR from '@microsoft/signalr';
+import { environment } from 'src/environments/environment';
 
 export class CommonService {
   // API url
   public apiUrl = 'https://localhost:7294/';
-  constructor() {}
+  constructor() {
+    this.apiUrl = environment.baseUrl;
+  }
 
   signalRConnectionInitilization() {
     let connection = new signalR.HubConnectionBuilder()

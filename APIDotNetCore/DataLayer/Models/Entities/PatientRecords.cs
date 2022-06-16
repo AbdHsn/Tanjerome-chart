@@ -7,6 +7,7 @@ namespace DataLayer.Models.Entities
     {
         public long Id { get; set; }
         public string? Name { get; set; }
+        public string? PatientId { get; set; }
         public string? Phone { get; set; }
         public decimal? Dioptres { get; set; }
         public DateTime? DateOfBirth { get; set; }

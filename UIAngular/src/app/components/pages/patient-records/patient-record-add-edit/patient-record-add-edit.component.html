@@ -6,6 +6,13 @@
   <div class="modal-body">
     <form #frmTask="ngForm">
       <div class="position-relative form-group mt-2 m-1">
+        <label for="iPatientId">Patient Id <small class="text-warning">Patient Id for old Patient, leave blank for
+            new Patient.</small></label>
+        <input [(ngModel)]="patientRecordMdl.patientId" name="iPatientId" id="iPatientId" placeholder="PatientId"
+          type="text" class="form-control" />
+      </div>
+
+      <div class="position-relative form-group mt-2 m-1">
         <label for="iName">Name</label>
         <input [(ngModel)]="patientRecordMdl.name" #iName="ngModel" name="iName" id="iName" placeholder="Name"
           type="text" class="form-control" required minlength="2" />
@@ -58,9 +65,8 @@
       <div class="position-relative form-group mt-2 m-1">
         <label for="iDOB">Date Of Birth</label>
         <div class="input-group">
-          <input [(ngModel)]="patientRecordMdl.dateOfBirthObject" type="date" placeholder="YYYY-MM-DD"
-            pattern="(?:19|20)\[0-9\]{2}-(?:(?:0\[1-9\]|1\[0-2\])/(?:0\[1-9\]|1\[0-9\]|2\[0-9\])|(?:(?!02)(?:0\[1-9\]|1\[0-2\])/(?:30))|(?:(?:0\[13578\]|1\[02\])-31))"
-            name="iDOB" id="iDOB" class="form-control" required />
+          <input [(ngModel)]="patientRecordMdl.dateOfBirth" type="date" class="form-control" required
+            placeholder="mm-dd-yyyy" name="iDOB" id="iDOB" class="form-control" required />
         </div>
 
         <!-- <div *ngIf="iDOB.invalid && iDOB.dirty">

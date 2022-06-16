@@ -201,7 +201,7 @@ export class PatientRecordListComponent implements OnInit {
         labels: chartModel.label,
         datasets: [
           {
-            label: 'Pyopia Progression',
+            label: 'Myopia Progression',
             borderColor: 'rgb(75, 192, 192)',
             backgroundColor: 'rgb(75, 192, 192, 0.2)',
             //data: model.map((t) => t.CurrentOnline),

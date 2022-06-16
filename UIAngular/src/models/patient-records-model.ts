@@ -1,10 +1,10 @@
 export class PatientRecords {
   id: number;
   name: string | null;
+  patientId: string | null;
   phone: string | null;
   dioptres: number;
-  dateOfBirth: Date | null;
-  dateOfBirthObject: any | null;
+  dateOfBirth: any | null;
   insertDate: Date | null;
   age: number = 0;
   chartData: ChartData;
