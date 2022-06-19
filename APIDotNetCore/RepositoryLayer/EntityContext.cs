@@ -25,6 +25,13 @@ namespace RepositoryLayer
                 entity.ToTable("PatientRecords");
                 entity.Property(p => p.Id).ValueGeneratedOnAdd().HasColumnName("Id");
             });
+            modelBuilder.Entity<Dioptres>(entity =>
+            {
+                entity.ToTable("Dioptres");
+                entity.Property(p => p.Id).ValueGeneratedOnAdd().HasColumnName("Id");
+                entity.Property(p => p.Dioptre).HasColumnType("decimal(8, 2)");
+                entity.Property(p => p.CalculatedAge).HasColumnType("decimal(8, 2)");
+            });
             
             modelBuilder.Entity<TotalRecordCountGLB>(entity =>
             {
@@ -34,6 +41,7 @@ namespace RepositoryLayer
 
         #region TableEntities
         public virtual DbSet<PatientRecords> PatientRecords { get; set; } = null!;
+        public virtual DbSet<Dioptres> Dioptres { get; set; } = null!;
         #endregion TableEntities
 
         #region  RawSQL Entity

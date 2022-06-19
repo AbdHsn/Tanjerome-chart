@@ -15,6 +15,7 @@ import { ToastService } from 'src/services/toast.service';
 import { ToastsContainer } from 'src/services/ToastsContainer.component';
 import { NgbdToastGlobal } from './components/pages/common-pages/toast-global/toast-global.component';
 import { PatientRecordsService } from 'src/services/patient-records.service';
+import { DioptresService } from 'src/services/dioptres.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,13 @@ import { PatientRecordsService } from 'src/services/patient-records.service';
     NoopAnimationsModule,
     HttpClientModule,
   ],
-  providers: [HttpClient, CommonService, ToastService, PatientRecordsService],
+  providers: [
+    HttpClient,
+    CommonService,
+    ToastService,
+    PatientRecordsService,
+    DioptresService,
+  ],
   bootstrap: [AppComponent, NgbdToastGlobal],
 })
 export class AppModule {}

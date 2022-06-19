@@ -9,11 +9,12 @@ namespace DataLayer.Models.Entities
         public string? Name { get; set; }
         public string? PatientId { get; set; }
         public string? Phone { get; set; }
-        public decimal? Dioptres { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public DateTime? InsertDate { get; set; }
         [NotMapped]
         public int? Age { get; set; }
+        [NotMapped]
+        public decimal? Dioptres { get; set; }
         [NotMapped]
         public object? ChartData { get; set; }
     }

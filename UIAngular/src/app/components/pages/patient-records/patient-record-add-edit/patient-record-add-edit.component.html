@@ -5,12 +5,12 @@
   </div>
   <div class="modal-body">
     <form #frmTask="ngForm">
-      <div class="position-relative form-group mt-2 m-1">
+      <!-- <div class="position-relative form-group mt-2 m-1">
         <label for="iPatientId">Patient Id <small class="text-warning">Patient Id for old Patient, leave blank for
             new Patient.</small></label>
         <input [(ngModel)]="patientRecordMdl.patientId" name="iPatientId" id="iPatientId" placeholder="PatientId"
           type="text" class="form-control" />
-      </div>
+      </div> -->
 
       <div class="position-relative form-group mt-2 m-1">
         <label for="iName">Name</label>
@@ -37,7 +37,7 @@
           </label>
         </div>
       </div>
-
+      <!-- 
       <div class="position-relative form-group mt-2 m-1">
         <label for="iDioptres">Dioptres</label>
         <input [(ngModel)]="patientRecordMdl.dioptres" #iDioptres="ngModel" name="iDioptres" id="iDioptres"
@@ -46,7 +46,7 @@
         <div *ngIf="iDioptres.invalid && iDioptres.dirty">
           <label class="text-warning" *ngIf="iDioptres.errors?.required">Dioptres is required.</label>
         </div>
-      </div>
+      </div> -->
 
       <!-- <div class="position-relative form-group mt-2 m-1">
         <label for="iDOB">Date Of Birth</label>

@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientRecordListComponent } from './patient-records/patient-record-list/patient-record-list.component';
 import { PatientRecordAddEditComponent } from './patient-records/patient-record-add-edit/patient-record-add-edit.component';
 import { ChartViewComponent } from './patient-records/chart-view/chart-view.component';
+import { DioptresComponent } from './Dioptres/Dioptres.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { ChartViewComponent } from './patient-records/chart-view/chart-view.comp
     PatientRecordListComponent,
     PatientRecordAddEditComponent,
     ChartViewComponent,
+    DioptresComponent,
   ],
   providers: [],
 })

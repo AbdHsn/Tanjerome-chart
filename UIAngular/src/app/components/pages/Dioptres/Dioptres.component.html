@@ -1,0 +1,110 @@
+<div class="shadow bg-white rounded">
+
+  <div class="row">
+    <div class="col-12 px-4 py-3">
+      <strong> Dioptres of {{patientName}}, Id: {{trackedNumber}} </strong>
+      <button (click)="_activeModal.close()" type="button" class="btn-close float-end" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 px-4 py-3">
+      <button (click)="viewCreateFormClick()" type="button" class="btn btn-sm btn-info "> Create Dioptre</button>
+    </div>
+
+  </div>
+
+  <div class="row" *ngIf="viewCreateForm">
+    <form #frmTask="ngForm">
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iDioptres">Dioptres</label>
+        <input [(ngModel)]="dioptreMdl.dioptre" #iDioptres="ngModel" name="iDioptres" id="iDioptres"
+          placeholder="Dioptres" type="number" class="form-control form-control-sm" required />
+
+        <div *ngIf="iDioptres.invalid && iDioptres.dirty">
+          <label class="text-warning" *ngIf="iDioptres.errors?.required">Dioptres is required.</label>
+        </div>
+      </div>
+
+
+      <div class="form-group mt-3 m-1">
+        <button *ngIf="!isProcessing" type="button" class="btn-transition btn btn-sm btn-outline-success"
+          [disabled]="frmTask.invalid" (click)="saveDioptre()">
+          <i class="fa fa-floppy-o" aria-hiddden="true"> Save</i>
+        </button>
+        <button *ngIf="isProcessing" class="btn-transition btn btn-sm btn-outline-info" type="button" disabled>
+          <span class="spinner-border text-danger spinner-border-sm" role="status" aria-hidden="true"></span>
+          Saving...
+        </button>
+        &nbsp;
+        <button type="button" class="btn-transition btn btn-sm btn-outline-danger" (click)="closeCreateForm()">
+          <i class="fa fa-times" aria-hidden="true"> </i>Cancel
+        </button>
+
+      </div>
+
+
+    </form>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12 px-4 py-3">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th scope="col"> Dioptre</th>
+            <th scope="col"> Status</th>
+            <th scope="col"> Age</th>
+            <th scope="col"> Insert Date</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="100" class="text-center">
+              <div class="spinner-border text-danger spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div><span class="text-warning p-2">Loading...</span>
+            </td>
+          </tr>
+          <tr *ngFor="let item of dioptresMdlLst">
+            <td>
+              {{ item.dioptre }}
+            </td>
+            <td>
+              <p>
+                <button type="button" *ngIf="item.dioptre >= 6" class="badge badge-danger text-danger">
+                  High
+                  Risk</button>
+                <button type="button" *ngIf="(item.dioptre >= 3 && item.dioptre < 6)"
+                  class="badge badge-danger text-warning"> Moderate Risk</button>
+                <button type="button" *ngIf="(item.dioptre >= 1 && item.dioptre < 3)"
+                  class="badge badge-danger text-info"> Low Risk</button>
+                <button type="button" *ngIf="(item.dioptre >= 0 && item.dioptre < 1)"
+                  class="badge badge-danger text-success"> Little to no Risk</button>
+              </p>
+            </td>
+            <td>{{item.calculatedAge}} Age</td>
+            <td>
+              <div class="row" *ngIf="item.insertDate != null">
+                <small> <span class="fa fa-calendar"></span> {{item.insertDate | date: "dd-MMM-yyyy"}}</small>
+              </div>
+            </td>
+
+            <td>
+
+              <button class="btn btn-sm btn-outline-danger" (click)="onDeleteClick(item)">Delete</button>
+
+            </td>
+          </tr>
+          <tr *ngIf="!isLoading && dioptresMdlLst.length <= 0">
+            <td colspan="100" class="text-center">
+              <span class="text-info p-2">No Records</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

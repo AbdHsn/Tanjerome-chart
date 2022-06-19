@@ -10,6 +10,7 @@ import { PatientRecordsService } from 'src/services/patient-records.service';
 import { PatientRecordAddEditComponent } from '../patient-record-add-edit/patient-record-add-edit.component';
 import * as moment from 'moment';
 import Chart from 'chart.js/auto';
+import { DioptresComponent } from '../../Dioptres/Dioptres.component';
 
 @Component({
   selector: 'patient-record-list',
@@ -119,6 +120,24 @@ export class PatientRecordListComponent implements OnInit {
     modalRef.componentInstance.title = 'Update Patient Record';
 
     modalRef.componentInstance.patientRecordMdl = Object.assign({}, item);
+    modalRef.result.then(
+      (result) => {
+        // this.getPatientGrid();
+      },
+      (reason) => {}
+    );
+  }
+
+  onDioptresClick(item: PatientRecords) {
+    const modalRef = this.modalService.open(DioptresComponent);
+    modalRef.componentInstance.title = `Dioptres of ${item.name}, Id:${item.patientId}`;
+
+    modalRef.componentInstance.patientId = item.id;
+    modalRef.componentInstance.patientName = item.name;
+    modalRef.componentInstance.trackedNumber = item.patientId;
+    modalRef.componentInstance.dob = moment(item.dateOfBirth).format(
+      'YYYY-MM-DD'
+    );
     modalRef.result.then(
       (result) => {
         // this.getPatientGrid();

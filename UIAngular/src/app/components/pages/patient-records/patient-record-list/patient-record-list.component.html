@@ -57,7 +57,7 @@
             <!-- fa fa-sort-amount-down -->
             <th scope="col" class="cursor-pointer" (click)="onOrderByClick('id')"><span class="{{orderColumn.column == 'id' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
-                ''}}"></span> Id</th>
+                ''}}"></span>Patient Id</th>
             <th scope="col" class="cursor-pointer" (click)="onOrderByClick('name')"> <span class="{{orderColumn.column == 'name' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span> Name</th>
@@ -67,7 +67,7 @@
 
             <th scope="col" class="cursor-pointer" (click)="onOrderByClick('dioptres')"> <span class="{{orderColumn.column == 'dioptres' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
-                ''}}"></span> Dioptres</th>
+                ''}}"></span> Dioptres (Latest)</th>
             <th scope="col" class="cursor-pointer" (click)="onOrderByClick('dateOfBirth')"> <span class="{{orderColumn.column == 'dateOfBirth' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span> Date Of Birth</th>
@@ -112,8 +112,12 @@
             </td>
 
             <td>
-              <button class="btn btn-sm btn-outline-info" (click)="onEditClick(item)">Edit</button> &nbsp;
-              <button class="btn btn-sm btn-outline-danger" (click)="onDeleteClick(item)">Delete</button>
+              <button class="btn btn-sm btn-outline-info" (click)="onDioptresClick(item)"><i
+                  class="fa fa-thermometer-empty" aria-hidden="true"></i> Dioptres</button> &nbsp;
+              <button class="btn btn-sm btn-outline-info" (click)="onEditClick(item)"><i class="fa fa-pencil"
+                  aria-hidden="true"></i>Edit</button> &nbsp;
+              <button class="btn btn-sm btn-outline-danger" (click)="onDeleteClick(item)"><i class="fa fa-trash-o"
+                  aria-hidden="true"></i>Delete</button>
             </td>
           </tr>
           <tr *ngIf="!isLoading && patientRecordMdlLst.length <= 0">

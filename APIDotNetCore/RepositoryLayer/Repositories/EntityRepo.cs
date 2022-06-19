@@ -28,9 +28,21 @@ namespace RepositoryLayer
             return await entities.ToListAsync();
         }
        
+        public async Task<IEnumerable<T>> GetAllByFilter(Expression<Func<T, bool>> predicate)
+        {
+            return await entities.Where(predicate).ToListAsync();
+        }
+        
         public async Task<T> GetById(Expression<Func<T, bool>> predicate)
         {
-            return await entities.FirstOrDefaultAsync(predicate);
+            var t =  await entities.FirstOrDefaultAsync(predicate);
+            return t;
+        }
+        
+        public async Task<T> GetLatestOne(Expression<Func<T, bool>> predicate)
+        {
+            var t =  await entities.LastOrDefaultAsync(predicate);
+            return t;
         }
         #endregion "Get Methods Implementation"
 

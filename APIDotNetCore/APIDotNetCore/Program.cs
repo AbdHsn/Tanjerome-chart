@@ -20,6 +20,8 @@ builder.Services.AddDbContext<EntityContext>(options =>
 builder.Services.AddTransient(typeof(IEntityRepo<>), typeof(EntityRepo<>));
 builder.Services.AddTransient(typeof(IRawQueryRepo<>), typeof(RawQueryRepo<>));
 builder.Services.AddTransient<PatientRecordsApi>();
+builder.Services.AddTransient<DioptresApi>();
+builder.Services.AddTransient<EntityContext>();
 #endregion
 
 string CorsPolicy = "CorsPolicy";
@@ -50,8 +52,12 @@ app.UseCors(CorsPolicy);
 //app.UseHttpsRedirection();
 
 var scope = app.Services.CreateAsyncScope();
-var services = scope.ServiceProvider.GetService<PatientRecordsApi>();
-await services.PatientRecordsAPIEndPoints(app);
+var patientRecordService = scope.ServiceProvider.GetService<PatientRecordsApi>();
+await patientRecordService.PatientRecordsAPIEndPoints(app);
+
+var dioptresService = scope.ServiceProvider.GetService<DioptresApi>();
+await dioptresService.DioptresAPIEndPoints(app);
+
 
 app.MapHub<BroadcastHub>("/broadcast-message", options =>
 {

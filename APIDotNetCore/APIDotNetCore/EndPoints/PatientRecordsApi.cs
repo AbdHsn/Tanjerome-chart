@@ -11,6 +11,8 @@ namespace APIDotNetCore.EndPoints
     public class PatientRecordsApi
     {
         #region Properties
+        private readonly EntityContext _context;
+        private readonly IEntityRepo<Dioptres> _dioptres;
         private readonly IEntityRepo<PatientRecords> _patientRecord;
         private readonly IRawQueryRepo<PatientRecords> _patientRecordRawSql;
         private readonly IRawQueryRepo<TotalRecordCountGLB> _patientRecordCountRawSql;
@@ -19,16 +21,20 @@ namespace APIDotNetCore.EndPoints
 
         #region Constructor
         public PatientRecordsApi(
-           IEntityRepo<PatientRecords> task,
-           IRawQueryRepo<PatientRecords> taskRawSql,
-           IRawQueryRepo<TotalRecordCountGLB> taskCountRawSql,
-           IHubContext<BroadcastHub, IHubClient> hubContext
+           IEntityRepo<PatientRecords> patientRecord,
+           IRawQueryRepo<PatientRecords> patientRecordRawSql,
+           IRawQueryRepo<TotalRecordCountGLB> patientRecordCountRawSql,
+           IHubContext<BroadcastHub, IHubClient> hubContext,
+           IEntityRepo<Dioptres> dioptres,
+           EntityContext context
         )
         {
-            _patientRecord = task;
-            _patientRecordRawSql = taskRawSql;
-            _patientRecordCountRawSql = taskCountRawSql;
+            _patientRecord = patientRecord;
+            _patientRecordRawSql = patientRecordRawSql;
+            _patientRecordCountRawSql = patientRecordCountRawSql;
             _hubContext = hubContext;
+            _dioptres = dioptres;
+            _context = context;
         }
         #endregion
 
@@ -127,8 +133,20 @@ namespace APIDotNetCore.EndPoints
 
                     #endregion database query code
 
+                   var data = dataGrid.Select(s => new PatientRecords()
+                    {
+                        Id = s.Id,
+                        PatientId = s.PatientId,
+                        Phone = s.Phone,
+                        Name = s.Name,
+                        DateOfBirth = s.DateOfBirth.Value,
+                        InsertDate = s.InsertDate,  
+                        Age = DateTime.Now.Year - s.DateOfBirth.Value.Year,
+                        Dioptres = _context.Dioptres.FirstOrDefault(f => f.PatientId == s.Id).Dioptre
+                    });
+
                     #region ChartData
-                    var createLabel = new List<int> { 
+                    var createLabel = new List<int> {
                     6,7,8,9,10,11,12,13,14,15,16,17
                     };
 
@@ -141,7 +159,7 @@ namespace APIDotNetCore.EndPoints
                         var patientChartData = new List<decimal>();
                         foreach (var item in createLabel)
                         {
-                            patientChartData.Add( 
+                            patientChartData.Add(
                                DateTime.Now.Year - patientItem.DateOfBirth.Value.Year == item ? (decimal)patientItem.Dioptres : 0
                             );
 
@@ -208,14 +226,11 @@ namespace APIDotNetCore.EndPoints
 
                     #endregion Validation
 
-                    if (string.IsNullOrEmpty(patientRecord.PatientId))
-                        patientRecord.PatientId = "create new.....";
-
                     patientRecord.InsertDate = DateTime.UtcNow;
                     await _patientRecord.Insert(patientRecord);
 
-                    patientRecord.Age = DateTime.Now.DayOfYear < patientRecord.DateOfBirth.Value.DayOfYear ? DateTime.Now.Year - patientRecord.DateOfBirth.Value.Year  : DateTime.Now.Year - patientRecord.DateOfBirth.Value.Year;
-
+                    patientRecord.PatientId = patientRecord.Id.ToString("D10");
+                    await _patientRecord.Update(patientRecord);
 
                     await _hubContext.Clients.All.BroadcastMessage(JsonSerializer.Serialize(new
                     {
@@ -255,15 +270,11 @@ namespace APIDotNetCore.EndPoints
 
                     #endregion Validation
 
-                    getPatientRecord.PatientId = patientRecord.PatientId;
                     getPatientRecord.Name = patientRecord.Name;
                     getPatientRecord.Phone = patientRecord.Phone;
                     getPatientRecord.DateOfBirth = patientRecord.DateOfBirth;
-                    getPatientRecord.Dioptres = patientRecord.Dioptres;
 
                     await _patientRecord.Update(getPatientRecord);
-
-                    getPatientRecord.Age = DateTime.Now.DayOfYear < getPatientRecord.DateOfBirth.Value.DayOfYear ? DateTime.Now.Year - getPatientRecord.DateOfBirth.Value.Year : DateTime.Now.Year - getPatientRecord.DateOfBirth.Value.Year;
 
                     await _hubContext.Clients.All.BroadcastMessage(JsonSerializer.Serialize(new
                     {
