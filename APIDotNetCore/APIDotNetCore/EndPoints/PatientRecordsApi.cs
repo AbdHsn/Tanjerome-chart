@@ -142,43 +142,43 @@ namespace APIDotNetCore.EndPoints
                         DateOfBirth = s.DateOfBirth.Value,
                         InsertDate = s.InsertDate,  
                         Age = DateTime.Now.Year - s.DateOfBirth.Value.Year,
-                        Dioptres = _context.Dioptres.FirstOrDefault(f => f.PatientId == s.Id).Dioptre
+                        Dioptres = _context.Dioptres.OrderByDescending(o => o.Id).FirstOrDefault(f => f.PatientId == s.Id)?.Dioptre
                     });
 
-                    #region ChartData
-                    var createLabel = new List<int> {
-                    6,7,8,9,10,11,12,13,14,15,16,17
-                    };
+                    //#region ChartData
+                    //var createLabel = new List<int> {
+                    //6,7,8,9,10,11,12,13,14,15,16,17
+                    //};
 
-                    //var chartValues = new List<PatientRecords>();
+                    ////var chartValues = new List<PatientRecords>();
 
-                    foreach (var patientItem in dataGrid)
-                    {
-                        patientItem.Age = DateTime.Now.Year - patientItem.DateOfBirth.Value.Year;
+                    //foreach (var patientItem in dataGrid)
+                    //{
+                    //    patientItem.Age = DateTime.Now.Year - patientItem.DateOfBirth.Value.Year;
 
-                        var patientChartData = new List<decimal>();
-                        foreach (var item in createLabel)
-                        {
-                            patientChartData.Add(
-                               DateTime.Now.Year - patientItem.DateOfBirth.Value.Year == item ? (decimal)patientItem.Dioptres : 0
-                            );
+                    //    var patientChartData = new List<decimal>();
+                    //    foreach (var item in createLabel)
+                    //    {
+                    //        patientChartData.Add(
+                    //           DateTime.Now.Year - patientItem.DateOfBirth.Value.Year == item ? (decimal)patientItem.Dioptres : 0
+                    //        );
 
-                            //patientChart.Dioptres = DateTime.Now.Year - patientItem.DateOfBirth.Value.Year == item ? patientItem.Dioptres : 0;
-                        }
+                    //        //patientChart.Dioptres = DateTime.Now.Year - patientItem.DateOfBirth.Value.Year == item ? patientItem.Dioptres : 0;
+                    //    }
 
-                        patientItem.ChartData = new
-                        {
-                            label = createLabel,
-                            data = patientChartData
-                        };
-                    }
+                    //    patientItem.ChartData = new
+                    //    {
+                    //        label = createLabel,
+                    //        data = patientChartData
+                    //    };
+                    //}
 
 
-                    #endregion
+                    //#endregion
 
                     return Results.Ok(new
                     {
-                        data = dataGrid,
+                        data = data,
                         totalRecords = dataGridCount.totalrecord
                     });
                 }

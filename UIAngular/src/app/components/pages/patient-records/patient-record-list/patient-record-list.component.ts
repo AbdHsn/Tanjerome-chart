@@ -11,6 +11,8 @@ import { PatientRecordAddEditComponent } from '../patient-record-add-edit/patien
 import * as moment from 'moment';
 import Chart from 'chart.js/auto';
 import { DioptresComponent } from '../../Dioptres/Dioptres.component';
+import { DioptresService } from 'src/services/dioptres.service';
+import { Dioptres } from 'src/models/dioptres';
 
 @Component({
   selector: 'patient-record-list',
@@ -19,6 +21,8 @@ import { DioptresComponent } from '../../Dioptres/Dioptres.component';
 })
 export class PatientRecordListComponent implements OnInit {
   patientRecordMdlLst: PatientRecords[] = [];
+  dioptresMdlLst: Dioptres[] = [];
+  selectedPatient: PatientRecords = new PatientRecords();
   isLoading: boolean = false;
   searchByName: string = '';
   searchByPhone: string = '';
@@ -35,6 +39,7 @@ export class PatientRecordListComponent implements OnInit {
 
   constructor(
     private _patientRecordSrv: PatientRecordsService,
+    private _dioptreSrv: DioptresService,
     private modalService: NgbModal,
     private _toastSrv: ToastService,
     private _commonSrv: CommonService
@@ -67,7 +72,7 @@ export class PatientRecordListComponent implements OnInit {
           this.isLoading = false;
 
           if (this.patientRecordMdlLst.length > 0) {
-            this.drawPatientBarChart(this.patientRecordMdlLst[0].chartData);
+            this.getDioptres(this.patientRecordMdlLst[0]);
           }
         },
         (error: HttpErrorResponse) => {
@@ -200,31 +205,40 @@ export class PatientRecordListComponent implements OnInit {
     });
   }
 
-  populateChartData(item: ChartData) {
-    this.drawPatientBarChart(item);
-  }
-
   public patientBarChart: any;
-  drawPatientBarChart(chartModel: ChartData) {
+  public chartLabels: number[] = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+  ];
+  drawPatientBarChart() {
     let chartStatus = Chart.getChart('patientBarChart'); // <canvas> id
-    if (chartStatus != undefined) {
+    if (chartStatus) {
       chartStatus.destroy();
     }
 
     this.patientBarChart = new Chart('patientBarChart', {
       type: 'bar',
       data: {
-        // labels: model.map((t) =>
-        //   this.datePipe.transform(t.CreatedDate, 'dd-MM-yy hh:mm')
-        // ),
-        labels: chartModel.label,
+        // labels: chartModel.label,
+        labels: this.dioptresMdlLst
+          .map((m) => 'Age: ' + m.calculatedAge)
+          .sort()
+          .reverse(),
         datasets: [
           {
             label: 'Myopia Progression',
             borderColor: 'rgb(75, 192, 192)',
-            backgroundColor: 'rgb(75, 192, 192, 0.2)',
+            backgroundColor: this.dioptresMdlLst.map((m) =>
+              m.dioptre >= 6
+                ? '	rgb(217, 83, 79, 0.7)'
+                : m.dioptre >= 3 && m.dioptre < 6
+                ? 'rgb(240, 173, 78)'
+                : m.dioptre >= 1 && m.dioptre < 3
+                ? 'rgb(91, 192, 222)'
+                : 'rgb(92, 184, 92)'
+            ),
             //data: model.map((t) => t.CurrentOnline),
-            data: chartModel.data,
+            //data: chartModel.data,
+            data: this.dioptresMdlLst.map((m) => m.dioptre),
 
             borderWidth: 1,
           },
@@ -240,5 +254,41 @@ export class PatientRecordListComponent implements OnInit {
         },
       },
     });
+  }
+
+  clearDrawnChart() {
+    let chartStatus = Chart.getChart('patientBarChart'); // <canvas> id
+    if (chartStatus) {
+      chartStatus.destroy();
+    }
+  }
+
+  getDioptres(item: PatientRecords) {
+    try {
+      this.isLoading = true;
+      this._dioptreSrv.getByParentId(item.id).then(
+        (res) => {
+          this.dioptresMdlLst = res as Dioptres[];
+          if (this.dioptresMdlLst.length > 0) {
+            this.drawPatientBarChart();
+            this.selectedPatient = item;
+          } else {
+            this.clearDrawnChart();
+            this.selectedPatient = {} as PatientRecords;
+          }
+          this.isLoading = false;
+        },
+        (error: HttpErrorResponse) => {
+          this.isLoading = false;
+          this._toastSrv.show(error.error, {
+            classname: 'bg-danger text-light',
+            delay: 10000,
+          });
+          this.isLoading = false;
+        }
+      );
+    } catch (error) {
+      this.isLoading = false;
+    }
   }
 }
