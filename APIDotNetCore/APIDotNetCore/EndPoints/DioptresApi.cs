@@ -65,7 +65,7 @@ namespace APIDotNetCore.EndPoints
                     #endregion Validation
 
                     dioptres.CalculatedAge =  DateTime.Now.Year - dioptres.DateOfBirth.Value.Year;
-                    dioptres.InsertDate =  DateTime.Now;
+                   
 
                     await _dioptres.Insert(dioptres);
 

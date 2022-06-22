@@ -4,7 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>D:\Work\Personal Work\Tanjerome-chart\APIDotNetCore\APIDotNetCore\bin\Release\net6.0\publish\</_PublishTargetUrl>
-    <History>True|2022-06-20T02:07:55.5807901Z;True|2022-06-16T07:29:32.8204622+06:00;True|2022-06-16T06:53:55.8670098+06:00;True|2022-06-16T06:39:44.8262906+06:00;True|2022-06-16T06:24:05.6286526+06:00;</History>
+    <_PublishTargetUrl>C:\Users\AbdHsn-Laptop\Desktop\api published</_PublishTargetUrl>
+    <History>True|2022-06-22T00:23:21.1184280Z;False|2022-06-22T06:20:16.8647551+06:00;False|2022-06-22T06:18:49.9731613+06:00;True|2022-06-22T06:17:55.8832273+06:00;True|2022-06-20T08:07:55.5807901+06:00;True|2022-06-16T07:29:32.8204622+06:00;True|2022-06-16T06:53:55.8670098+06:00;True|2022-06-16T06:39:44.8262906+06:00;True|2022-06-16T06:24:05.6286526+06:00;</History>
   </PropertyGroup>
 </Project>

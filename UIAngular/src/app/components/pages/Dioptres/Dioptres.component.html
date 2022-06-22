@@ -26,6 +26,19 @@
         </div>
       </div>
 
+      <div class="position-relative form-group mt-2 m-1">
+        <label for="iDioptreDate">Date of Dioptre</label>
+        <div class="input-group">
+          <input [(ngModel)]="dioptreMdl.insertDate" #iDioptreDate="ngModel" type="date" class="form-control" required
+            placeholder="mm-dd-yyyy" name="iDioptreDate" id="iDioptreDate" class="form-control" required />
+        </div>
+
+        <div *ngIf="iDioptreDate.invalid && iDioptreDate.dirty">
+          <label class="text-warning" *ngIf="iDioptreDate.errors?.required">Date of birth is required.</label>
+        </div>
+      </div>
+
+
 
       <div class="form-group mt-3 m-1">
         <button *ngIf="!isProcessing" type="button" class="btn-transition btn btn-sm btn-outline-success"

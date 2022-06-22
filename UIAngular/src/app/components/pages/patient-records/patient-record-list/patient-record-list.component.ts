@@ -51,6 +51,7 @@ export class PatientRecordListComponent implements OnInit {
   }
 
   getPatientGrid() {
+    if (this.isLoading) return;
     try {
       let postData = {
         columns: [],
@@ -206,9 +207,7 @@ export class PatientRecordListComponent implements OnInit {
   }
 
   public patientBarChart: any;
-  public chartLabels: number[] = [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-  ];
+
   drawPatientBarChart() {
     let chartStatus = Chart.getChart('patientBarChart'); // <canvas> id
     if (chartStatus) {
@@ -219,10 +218,7 @@ export class PatientRecordListComponent implements OnInit {
       type: 'bar',
       data: {
         // labels: chartModel.label,
-        labels: this.dioptresMdlLst
-          .map((m) => 'Age: ' + m.calculatedAge)
-          .sort()
-          .reverse(),
+        labels: this.dioptresMdlLst.map((m) => 'Age: ' + m.calculatedAge),
         datasets: [
           {
             label: 'Myopia Progression',
