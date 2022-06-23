@@ -244,7 +244,8 @@ export class PatientRecordListComponent implements OnInit {
         scales: {
           y: {
             min: -10,
-            max: 10,
+            max: 1,
+            reverse: true,
             ticks: {
               // forces step size to be 50 units
               stepSize: 1.0,
