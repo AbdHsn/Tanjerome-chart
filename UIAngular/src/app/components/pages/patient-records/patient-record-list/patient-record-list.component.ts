@@ -217,23 +217,22 @@ export class PatientRecordListComponent implements OnInit {
     this.patientBarChart = new Chart('patientBarChart', {
       type: 'bar',
       data: {
-        // labels: chartModel.label,
         labels: this.dioptresMdlLst.map((m) => 'Age: ' + m.calculatedAge),
         datasets: [
           {
             label: 'Myopia Progression',
-            borderColor: 'rgb(75, 192, 192)',
-            backgroundColor: this.dioptresMdlLst.map((m) =>
-              m.dioptre >= 6
-                ? '	rgb(217, 83, 79, 0.7)'
-                : m.dioptre >= 3 && m.dioptre < 6
-                ? 'rgb(240, 173, 78)'
-                : m.dioptre >= 1 && m.dioptre < 3
-                ? 'rgb(91, 192, 222)'
-                : 'rgb(92, 184, 92)'
+            borderColor: 'rgb(211,211,211)',
+            backgroundColor: this.dioptresMdlLst.map(
+              (m) =>
+                'rgb(' +
+                (Math.floor((256 - 199) * Math.random()) + 200) +
+                ',' +
+                (Math.floor((256 - 199) * Math.random()) + 200) +
+                ',' +
+                (Math.floor((256 - 199) * Math.random()) + 200) +
+                0.6 +
+                ')'
             ),
-            //data: model.map((t) => t.CurrentOnline),
-            //data: chartModel.data,
             data: this.dioptresMdlLst.map((m) => m.dioptre),
 
             borderWidth: 1,
@@ -244,8 +243,12 @@ export class PatientRecordListComponent implements OnInit {
         responsive: true,
         scales: {
           y: {
-            min: 0,
+            min: -10,
             max: 10,
+            ticks: {
+              // forces step size to be 50 units
+              stepSize: 1.0,
+            },
           },
         },
       },

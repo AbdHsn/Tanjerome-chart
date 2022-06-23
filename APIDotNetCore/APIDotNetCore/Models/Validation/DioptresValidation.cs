@@ -7,7 +7,7 @@ namespace APIDotNetCore.Models.Validation
     {
         public DioptresValidation()
         {
-            RuleFor(r => r.Dioptre).NotNull().NotEmpty().GreaterThanOrEqualTo(0).LessThanOrEqualTo(100);
+            RuleFor(r => r.Dioptre).NotNull().NotEmpty();//.GreaterThanOrEqualTo(0).LessThanOrEqualTo(100);
         }
     }
 }

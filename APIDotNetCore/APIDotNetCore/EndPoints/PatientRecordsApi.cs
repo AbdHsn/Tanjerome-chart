@@ -142,7 +142,7 @@ namespace APIDotNetCore.EndPoints
                         DateOfBirth = s.DateOfBirth.Value,
                         InsertDate = s.InsertDate,  
                         Age = DateTime.Now.Year - s.DateOfBirth.Value.Year,
-                        Dioptres = _context.Dioptres.OrderByDescending(o => o.Id).FirstOrDefault(f => f.PatientId == s.Id)?.Dioptre
+                        Dioptres = _context.Dioptres.OrderByDescending(o => o.InsertDate).FirstOrDefault(f => f.PatientId == s.Id)?.Dioptre
                     });
 
                     //#region ChartData

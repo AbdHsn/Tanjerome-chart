@@ -94,7 +94,9 @@
             <td>{{ item.phone }}</td>
             <td>
               <p *ngIf="item.dioptres; else elseBlock">
-                <button type="button" *ngIf="item.dioptres >= 6" class="badge badge-danger text-danger">
+                <button type="button" class="badge text-dark">
+                  {{  item.dioptres }}</button>
+                <!-- <button type="button" *ngIf="item.dioptres >= 6" class="badge badge-danger text-danger">
                   {{  item.dioptres }} - High
                   Risk</button>
                 <button type="button" *ngIf="(item.dioptres >= 3 && item.dioptres < 6)"
@@ -102,7 +104,7 @@
                 <button type="button" *ngIf="(item.dioptres >= 1 && item.dioptres < 3)"
                   class="badge badge-danger text-info"> {{  item.dioptres }} - Low Risk</button>
                 <button type="button" *ngIf="(item.dioptres >= 0 && item.dioptres < 1)"
-                  class="badge badge-danger text-success"> {{  item.dioptres }} - Little to no Risk</button>
+                  class="badge badge-danger text-success"> {{  item.dioptres }} - Little to no Risk</button> -->
               </p>
               <ng-template #elseBlock>
                 <p>No Data</p>

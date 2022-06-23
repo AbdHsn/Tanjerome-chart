@@ -67,7 +67,7 @@
         <thead>
           <tr>
             <th scope="col"> Dioptre</th>
-            <th scope="col"> Status</th>
+            <!-- <th scope="col"> Status</th> -->
             <th scope="col"> Age</th>
             <th scope="col"> Insert Date</th>
             <th scope="col">Options</th>
@@ -85,7 +85,7 @@
             <td>
               {{ item.dioptre }}
             </td>
-            <td>
+            <!-- <td>
               <p>
                 <button type="button" *ngIf="item.dioptre >= 6" class="badge badge-danger text-danger">
                   High
@@ -97,7 +97,7 @@
                 <button type="button" *ngIf="(item.dioptre >= 0 && item.dioptre < 1)"
                   class="badge badge-danger text-success"> Little to no Risk</button>
               </p>
-            </td>
+            </td> -->
             <td>{{item.calculatedAge}} Age</td>
             <td>
               <div class="row" *ngIf="item.insertDate != null">
