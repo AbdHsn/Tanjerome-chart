@@ -103,6 +103,9 @@ namespace APIDotNetCore.EndPoints
                             else if (!string.IsNullOrEmpty(item.value) && item.search_by == "phone")
                             {
                                 whereConditionStatement += $@"{item.search_by} LIKE '%{item.value}%' AND ";
+                            }   else if (!string.IsNullOrEmpty(item.value) && item.search_by == "patientId")
+                            {
+                                whereConditionStatement += $@"{item.search_by} LIKE '%{item.value}%' AND ";
                             }
                             else if (!string.IsNullOrEmpty(item.value))
                                 whereConditionStatement += item.search_by + " = '" + item.value + "' AND ";

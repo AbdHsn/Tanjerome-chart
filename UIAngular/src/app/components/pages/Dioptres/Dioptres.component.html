@@ -9,7 +9,8 @@
 
   <div class="row">
     <div class="col-12 px-4 py-3">
-      <button (click)="viewCreateFormClick()" type="button" class="btn btn-sm btn-info "> Create Dioptre</button>
+      <button (click)="viewCreateFormClick()" type="button" class="btn btn-sm btn-outline-secondary"> New
+        Dioptre</button>
     </div>
 
   </div>
@@ -45,15 +46,14 @@
           [disabled]="frmTask.invalid" (click)="saveDioptre()">
           <i class="fa fa-floppy-o" aria-hiddden="true"> Save</i>
         </button>
-        <button *ngIf="isProcessing" class="btn-transition btn btn-sm btn-outline-info" type="button" disabled>
+        <button *ngIf="isProcessing" class="btn btn-sm btn-outline-info" type="button" disabled>
           <span class="spinner-border text-danger spinner-border-sm" role="status" aria-hidden="true"></span>
           Saving...
         </button>
         &nbsp;
-        <button type="button" class="btn-transition btn btn-sm btn-outline-danger" (click)="closeCreateForm()">
-          <i class="fa fa-times" aria-hidden="true"> </i>Cancel
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="closeCreateForm()">
+          <i class="fa fa-times" aria-hidden="true"> </i> Cancel
         </button>
-
       </div>
 
 
@@ -107,8 +107,8 @@
 
             <td>
 
-              <button class="btn btn-sm btn-outline-danger" (click)="onDeleteClick(item)">Delete</button>
-
+              <button class="btn btn-sm btn-outline-danger" (click)="onDeleteClick(item)"><i class="fa fa-trash-o"
+                  aria-hidden="true"></i> Delete</button>
             </td>
           </tr>
           <tr *ngIf="!isLoading && dioptresMdlLst.length <= 0">

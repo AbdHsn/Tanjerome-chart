@@ -26,6 +26,7 @@ export class PatientRecordListComponent implements OnInit {
   isLoading: boolean = false;
   searchByName: string = '';
   searchByPhone: string = '';
+  searchByPatientId: string = '';
 
   orderColumn = {
     column: 'InsertDate',
@@ -62,6 +63,7 @@ export class PatientRecordListComponent implements OnInit {
         searches: [
           { search_by: 'name', value: this.searchByName },
           { search_by: 'phone', value: this.searchByPhone },
+          { search_by: 'patientId', value: this.searchByPatientId },
         ],
       };
 
@@ -186,6 +188,11 @@ export class PatientRecordListComponent implements OnInit {
   }
 
   onSearchByName(event: any) {
+    if (event.key === 'Enter') {
+      this.getPatientGrid();
+    }
+  }
+  onSearchByPatientId(event: any) {
     if (event.key === 'Enter') {
       this.getPatientGrid();
     }

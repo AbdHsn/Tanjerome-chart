@@ -7,21 +7,16 @@
 
   <div class="row mt-2">
 
-    <div class="col-2 p-5 text-center mb-2">
-
-    </div>
-    <div class="col-8 p-5 text-center mb-2">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-5 text-center mb-2">
       <div *ngIf="selectedPatient.patientId" class="row"><strong> Patient: {{selectedPatient.name}}, Id:
           {{selectedPatient.patientId}}</strong>
       </div>
-      <canvas id="patientBarChart" class="chartjs-render-monitor"></canvas>
-    </div>
-    <div class="col-2 p-5 text-center mb-2">
-
+      <canvas id="patientBarChart" class="chartjs-render-monitor" style="max-height: 400px;"></canvas>
     </div>
 
-    <div class="col-lg-4 col-sm-12">
+    <div class="col-lg-5 col-sm-12 mb-1">
       <div class="input-group">
+        <button class="btn btn-sm btn-outline-secondary" (click)="onCreateClick()"><Span></Span> New Patient</button>
         <label class="input-group-text" for="inputGroupSelect01">Total Records: {{totalRecord}}</label>
         <label class="input-group-text" for="inputGroupSelect01">Row Size</label>
         <select name="num" [(ngModel)]="rowSize" (change)="onRowSizeOptionChange($event)" class="form-select"
@@ -29,14 +24,18 @@
           <option *ngFor="let item of rowSizeOption" [value]="item">{{item}}</option>
         </select>
 
-        <button class="btn btn-sm btn-info" (click)="onCreateClick()"><Span></Span> New Record</button>
       </div>
     </div>
-    <div class="col-lg-8 col-sm-12">
+    <div class="col-lg-7 col-sm-12 mb-1">
       <div class="row">
-        <div class="col-lg-8 col-sm-12"></div>
-        <div class="col-lg-4 col-sm-12">
+        <div class="col-lg-2 col-sm-12"></div>
+        <div class="col-lg-10 col-sm-12">
           <div class="input-group">
+
+            <input [(ngModel)]="searchByPatientId" id="searchByPatientId" name="searchByPatientId"
+              (keyup)="onSearchByPatientId($event)" type="text" class="form-control" placeholder="Search By Patient Id"
+              aria-label="Search" aria-describedby="basic-addon2">
+
             <input [(ngModel)]="searchByName" id="searchByName" name="searchByName" (keyup)="onSearchByName($event)"
               type="text" class="form-control" placeholder="Search By Name" aria-label="Search"
               aria-describedby="basic-addon2">
@@ -52,30 +51,32 @@
   </div>
 
   <div class="row">
-    <div class="col-12">
-      <table class="table table-hover table-striped">
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered table-sm">
         <thead>
           <tr>
 
             <!-- fa fa-sort-amount-down -->
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('id')"><span class="{{orderColumn.column == 'id' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+            <th style="width: 5%;" scope="col" class="cursor-pointer" (click)="onOrderByClick('id')"><span class="{{orderColumn.column == 'id' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span>Patient Id</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('name')"> <span class="{{orderColumn.column == 'name' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+            <th style="width: 10%;" scope="col" class="cursor-pointer" (click)="onOrderByClick('name')"> <span class="{{orderColumn.column == 'name' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span> Name</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('phone')"> <span class="{{orderColumn.column == 'phone' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+            <th style="width: 7%;" scope="col" class="cursor-pointer" (click)="onOrderByClick('phone')"> <span class="{{orderColumn.column == 'phone' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span> Phone</th>
 
-            <th scope="col"> Dioptres (Latest)</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('dateOfBirth')"> <span class="{{orderColumn.column == 'dateOfBirth' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+            <th style="width: 3%;" scope="col"> Dioptres (Latest)</th>
+            <th style="width: 10%;" scope="col" class="cursor-pointer" (click)="onOrderByClick('dateOfBirth')"> <span
+                class="{{orderColumn.column == 'dateOfBirth' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span> Date Of Birth</th>
-            <th scope="col" class="cursor-pointer" (click)="onOrderByClick('insertDate')"> <span class="{{orderColumn.column == 'insertDate' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
+            <th style="width: 10%;" scope="col" class="cursor-pointer" (click)="onOrderByClick('insertDate')"> <span
+                class="{{orderColumn.column == 'insertDate' ? orderColumn.order_by == 'DESC' ? 'fa fa-sort-amount-down':'fa
                 fa-sort-amount-up':
                 ''}}"></span> Insert Date</th>
-            <th scope="col">Options</th>
+            <th style="width: 20%;" scope="col">Options</th>
           </tr>
         </thead>
         <tbody>
@@ -110,20 +111,29 @@
                 <p>No Data</p>
               </ng-template>
             </td>
-            <td>{{item.age}} Age, {{ item.dateOfBirth | date: "dd-MMM-yyyy" }}</td>
             <td>
-              <div class="row" *ngIf="item.insertDate != null">
+
+              {{item.age}} Age, {{ item.dateOfBirth | date: "dd-MMM-yyyy" }}
+
+            </td>
+            <td>
+              <div *ngIf="item.insertDate != null">
                 <small> <span class="fa fa-calendar"></span> {{item.insertDate | date: "dd-MMM-yyyy"}}</small>
               </div>
             </td>
 
             <td>
-              <button class="btn btn-sm btn-outline-info" (click)="onDioptresClick(item)"><i
-                  class="fa fa-thermometer-empty" aria-hidden="true"></i> Dioptres</button> &nbsp;
-              <button class="btn btn-sm btn-outline-info" (click)="onEditClick(item)"><i class="fa fa-pencil"
-                  aria-hidden="true"></i>Edit</button> &nbsp;
-              <button class="btn btn-sm btn-outline-danger" (click)="onDeleteClick(item)"><i class="fa fa-trash-o"
-                  aria-hidden="true"></i>Delete</button>
+
+
+              <button class="btn btn-sm btn-outline-primary m-1" (click)="onDioptresClick(item)"><i
+                  class="fa fa-thermometer-empty" aria-hidden="true"></i> Dioptres</button>
+              <button class="btn btn-sm btn-outline-info m-1" (click)="onEditClick(item)"><i class="fa fa-pencil"
+                  aria-hidden="true"></i> Edit</button>
+              <button class="btn btn-sm btn-outline-danger m-1" (click)="onDeleteClick(item)"><i class="fa fa-trash-o"
+                  aria-hidden="true"></i> Delete</button>
+
+
+
             </td>
           </tr>
           <tr *ngIf="!isLoading && patientRecordMdlLst.length <= 0">

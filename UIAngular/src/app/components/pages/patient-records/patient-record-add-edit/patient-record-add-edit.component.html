@@ -76,17 +76,17 @@
 
 
       <div class="form-group mt-3 m-1">
-        <button *ngIf="!isProcessing" type="button" class="btn-transition btn btn-outline-success"
-          [disabled]="frmTask.invalid" (click)="savePatientRecord()">
+        <button *ngIf="!isProcessing" type="button" class="btn btn-outline-success" [disabled]="frmTask.invalid"
+          (click)="savePatientRecord()">
           <i class="fa fa-floppy-o" aria-hiddden="true"> Save</i>
         </button>
-        <button *ngIf="isProcessing" class="btn-transition btn btn-outline-info" type="button" disabled>
+        <button *ngIf="isProcessing" class="btn btn-outline-info" type="button" disabled>
           <span class="spinner-border text-danger spinner-border-sm" role="status" aria-hidden="true"></span>
           Processing...
         </button>
         &nbsp;
-        <button type="button" class="btn-transition btn btn-outline-danger" (click)="_activeModal.close()">
-          <i class="fa fa-times" aria-hidden="true"> Cancel</i>
+        <button type="button" class="btn btn-outline-danger" (click)="_activeModal.close()">
+          <i class="fa fa-times" aria-hidden="true"> </i> Cancel
         </button>
 
       </div>
