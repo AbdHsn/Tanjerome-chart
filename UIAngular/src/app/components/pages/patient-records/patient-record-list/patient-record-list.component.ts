@@ -227,7 +227,7 @@ export class PatientRecordListComponent implements OnInit {
         labels: this.dioptresMdlLst.map((m) => 'Age: ' + m.calculatedAge),
         datasets: [
           {
-            label: 'Myopia Progression',
+            label: 'SE',
             borderColor: 'rgb(211,211,211)',
             backgroundColor: this.dioptresMdlLst.map(
               (m) =>

@@ -40,7 +40,7 @@ namespace APIDotNetCore.EndPoints
                 try
                 {
                     var returnData = await _dioptres.GetAllByFilter(d => d.PatientId == patientId);
-                    return Results.Ok(returnData.OrderByDescending(o => o.Id));
+                    return Results.Ok(returnData.OrderBy(o => o.CalculatedAge));
                 }
                 catch (Exception ex)
                 {

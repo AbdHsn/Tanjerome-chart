@@ -16,7 +16,7 @@
 
     <div class="col-lg-5 col-sm-12 mb-1">
       <div class="input-group">
-        <button class="btn btn-sm btn-outline-secondary" (click)="onCreateClick()"><Span></Span> New Patient</button>
+        <button class="btn btn-sm btn-outline-info" (click)="onCreateClick()"><Span></Span> New Patient</button>
         <label class="input-group-text" for="inputGroupSelect01">Total Records: {{totalRecord}}</label>
         <label class="input-group-text" for="inputGroupSelect01">Row Size</label>
         <select name="num" [(ngModel)]="rowSize" (change)="onRowSizeOptionChange($event)" class="form-select"
@@ -108,7 +108,9 @@
                   class="badge badge-danger text-success"> {{  item.dioptres }} - Little to no Risk</button> -->
               </p>
               <ng-template #elseBlock>
-                <p>No Data</p>
+
+                <button type="button" class="badge text-danger">
+                  No Data</button>
               </ng-template>
             </td>
             <td>

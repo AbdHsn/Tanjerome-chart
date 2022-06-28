@@ -232,7 +232,7 @@ namespace APIDotNetCore.EndPoints
                     patientRecord.InsertDate = DateTime.UtcNow;
                     await _patientRecord.Insert(patientRecord);
 
-                    patientRecord.PatientId = patientRecord.Id.ToString("D10");
+                    patientRecord.PatientId = patientRecord.Id.ToString("D4");
                     await _patientRecord.Update(patientRecord);
 
                     await _hubContext.Clients.All.BroadcastMessage(JsonSerializer.Serialize(new

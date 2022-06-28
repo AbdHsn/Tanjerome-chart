@@ -95,7 +95,7 @@ export class DioptresComponent implements OnInit {
       const modalRef = this._modalSrv.open(DeleteDialogComponent, {
         centered: true,
       });
-      modalRef.componentInstance.title = `"${item.dioptre}"`;
+      modalRef.componentInstance.title = `Dioptre "${item.dioptre}"`;
       modalRef.result.then((result) => {
         if (result as boolean) {
           this._dioptreSrv.Delete(item.id).subscribe(
