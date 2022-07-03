@@ -33,10 +33,11 @@ builder.Services.AddCors(options => options.AddPolicy(name: CorsPolicy,
                .AllowAnyMethod()
                .AllowAnyOrigin()
                .WithOrigins(
-                                "http://3.17.60.180",
-                                "https://3.17.60.180",
-                                "http://3.17.60.180:80",
-                                "https://3.17.60.180:80"
+                                "http://localhost:4200",
+                                "http://34.212.117.50",
+                                "https://34.212.117.50",
+                                "http://34.212.117.50:81",
+                                "https://34.212.117.50:81"
 
                             )
                            .WithMethods("POST", "GET", "PUT", "DELETE")
