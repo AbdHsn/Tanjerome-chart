@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Web.Http;
 using APIDotNetCore.Models.Validation;
 using APIDotNetCore.SignalREndPoints;
 using DataLayer.Models.Entities;
@@ -8,7 +9,7 @@ using RepositoryLayer;
 
 namespace APIDotNetCore.EndPoints
 {
-    public class DioptresApi
+    public class DioptresApi: ApiController
     {
         #region Properties
         private readonly IEntityRepo<Dioptres> _dioptres;
